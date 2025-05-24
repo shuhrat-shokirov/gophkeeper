@@ -24,6 +24,7 @@ type Params struct {
 
 type JWT interface {
 	GenerateTokenPair(userID int) (*TokenPair, error)
+	GenerateOnlyAccessToken(userID int) (string, error)
 }
 
 type jwtI struct {
@@ -41,18 +42,11 @@ type TokenPair struct {
 	RefreshToken string
 }
 
+// GenerateTokenPair generates a pair of tokens: access token and refresh token.
 func (j *jwtI) GenerateTokenPair(userID int) (*TokenPair, error) {
-	// Access token (JWT)
-	accessTokenClaims := jwt.MapClaims{
-		"user_id": strconv.Itoa(userID),
-		"exp":     time.Now().Add(30 * time.Minute).Unix(),
-		"iat":     time.Now().Unix(),
-	}
-
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString(j.jwtSecret)
+	accessTokenString, err := j.GenerateOnlyAccessToken(userID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to sign access token: %w", err)
+		return nil, fmt.Errorf("failed to generate access token: %w", err)
 	}
 
 	// Refresh token (secure random string)
@@ -65,6 +59,24 @@ func (j *jwtI) GenerateTokenPair(userID int) (*TokenPair, error) {
 		AccessToken:  accessTokenString,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+// GenerateOnlyAccessToken generates only the access token without a refresh token.
+func (j *jwtI) GenerateOnlyAccessToken(userID int) (string, error) {
+	// Access token (JWT)
+	accessTokenClaims := jwt.MapClaims{
+		"user_id": strconv.Itoa(userID),
+		"exp":     time.Now().Add(30 * time.Minute).Unix(),
+		"iat":     time.Now().Unix(),
+	}
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
+	accessTokenString, err := accessToken.SignedString(j.jwtSecret)
+	if err != nil {
+		return "", fmt.Errorf("failed to sign access token: %w", err)
+	}
+
+	return accessTokenString, nil
 }
 
 // Helper: generates a cryptographically secure random string

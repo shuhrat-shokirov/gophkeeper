@@ -12,6 +12,7 @@ var Module = fx.Provide(New)
 
 type Repo interface {
 	Create(ctx context.Context, session *Session) error
+	Get(ctx context.Context, refreshToken string) (*Session, error)
 }
 
 type Params struct {

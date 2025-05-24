@@ -7,6 +7,6 @@ type Session struct {
 	UserID       int
 	RefreshToken string
 	CreatedAt    time.Time
-	ExpiresAt    time.Time
+	ExpiredAt    time.Time
 	UpdatedAt    time.Time
 }

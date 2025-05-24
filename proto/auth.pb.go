@@ -131,6 +131,61 @@ func (ConfirmRegistrationStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{1}
 }
 
+type RefreshTokenStatus int32
+
+const (
+	RefreshTokenStatus_REFRESH_STATUS_UNSPECIFIED RefreshTokenStatus = 0
+	RefreshTokenStatus_REFRESH_SUCCESS            RefreshTokenStatus = 1
+	RefreshTokenStatus_INVALID_REFRESH_TOKEN      RefreshTokenStatus = 2
+	RefreshTokenStatus_EXPIRED_REFRESH_TOKEN      RefreshTokenStatus = 3
+	RefreshTokenStatus_REFRESH_ERROR              RefreshTokenStatus = 4
+)
+
+// Enum value maps for RefreshTokenStatus.
+var (
+	RefreshTokenStatus_name = map[int32]string{
+		0: "REFRESH_STATUS_UNSPECIFIED",
+		1: "REFRESH_SUCCESS",
+		2: "INVALID_REFRESH_TOKEN",
+		3: "EXPIRED_REFRESH_TOKEN",
+		4: "REFRESH_ERROR",
+	}
+	RefreshTokenStatus_value = map[string]int32{
+		"REFRESH_STATUS_UNSPECIFIED": 0,
+		"REFRESH_SUCCESS":            1,
+		"INVALID_REFRESH_TOKEN":      2,
+		"EXPIRED_REFRESH_TOKEN":      3,
+		"REFRESH_ERROR":              4,
+	}
+)
+
+func (x RefreshTokenStatus) Enum() *RefreshTokenStatus {
+	p := new(RefreshTokenStatus)
+	*p = x
+	return p
+}
+
+func (x RefreshTokenStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RefreshTokenStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_auth_proto_enumTypes[2].Descriptor()
+}
+
+func (RefreshTokenStatus) Type() protoreflect.EnumType {
+	return &file_proto_auth_proto_enumTypes[2]
+}
+
+func (x RefreshTokenStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RefreshTokenStatus.Descriptor instead.
+func (RefreshTokenStatus) EnumDescriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{2}
+}
+
 type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
@@ -298,9 +353,10 @@ func (x *ConfirmRegistrationRequest) GetCode() string {
 type ConfirmRegistrationResponse struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
 	Status        ConfirmRegistrationStatus `protobuf:"varint,1,opt,name=status,proto3,enum=auth.ConfirmRegistrationStatus" json:"status,omitempty"`
-	UserId        int64                     `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // возвращаем ID пользователя, если успех
-	Token         string                    `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`                  // JWT или session, чтобы сразу работать дальше
-	Message       string                    `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`              // например: "Регистрация успешно подтверждена"
+	UserId        int64                     `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                  // возвращаем ID пользователя, если успех
+	Token         string                    `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`                                   // JWT или session, чтобы сразу работать дальше
+	RefreshToken  string                    `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"` // для обновления токена
+	Message       string                    `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                               // например: "Регистрация успешно подтверждена"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -356,7 +412,118 @@ func (x *ConfirmRegistrationResponse) GetToken() string {
 	return ""
 }
 
+func (x *ConfirmRegistrationResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
 func (x *ConfirmRegistrationResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type RefreshTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenRequest) Reset() {
+	*x = RefreshTokenRequest{}
+	mi := &file_proto_auth_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenRequest) ProtoMessage() {}
+
+func (x *RefreshTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenRequest.ProtoReflect.Descriptor instead.
+func (*RefreshTokenRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *RefreshTokenRequest) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type RefreshTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        RefreshTokenStatus     `protobuf:"varint,1,opt,name=status,proto3,enum=auth.RefreshTokenStatus" json:"status,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`     // новый JWT токен
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"` // сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenResponse) Reset() {
+	*x = RefreshTokenResponse{}
+	mi := &file_proto_auth_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenResponse) ProtoMessage() {}
+
+func (x *RefreshTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenResponse.ProtoReflect.Descriptor instead.
+func (*RefreshTokenResponse) Descriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *RefreshTokenResponse) GetStatus() RefreshTokenStatus {
+	if x != nil {
+		return x.Status
+	}
+	return RefreshTokenStatus_REFRESH_STATUS_UNSPECIFIED
+}
+
+func (x *RefreshTokenResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *RefreshTokenResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -377,12 +544,19 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\amessage\x18\x03 \x01(\tR\amessage\"G\n" +
 	"\x1aConfirmRegistrationRequest\x12\x15\n" +
 	"\x06otp_id\x18\x01 \x01(\tR\x05otpId\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\"\x9f\x01\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"\xc4\x01\n" +
 	"\x1bConfirmRegistrationResponse\x127\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x1f.auth.ConfirmRegistrationStatusR\x06status\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage*l\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12#\n" +
+	"\rrefresh_token\x18\x04 \x01(\tR\frefreshToken\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\":\n" +
+	"\x13RefreshTokenRequest\x12#\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"x\n" +
+	"\x14RefreshTokenResponse\x120\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x18.auth.RefreshTokenStatusR\x06status\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage*l\n" +
 	"\x0eRegisterStatus\x12\x1f\n" +
 	"\x1bREGISTER_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13USER_ALREADY_EXISTS\x10\x01\x12\f\n" +
@@ -394,10 +568,17 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\fINVALID_CODE\x10\x02\x12\x10\n" +
 	"\fCODE_EXPIRED\x10\x03\x12\x17\n" +
 	"\x13USER_NOT_FOUND_CODE\x10\x04\x12\x11\n" +
-	"\rCONFIRM_ERROR\x10\x052\xa4\x01\n" +
+	"\rCONFIRM_ERROR\x10\x05*\x92\x01\n" +
+	"\x12RefreshTokenStatus\x12\x1e\n" +
+	"\x1aREFRESH_STATUS_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fREFRESH_SUCCESS\x10\x01\x12\x19\n" +
+	"\x15INVALID_REFRESH_TOKEN\x10\x02\x12\x19\n" +
+	"\x15EXPIRED_REFRESH_TOKEN\x10\x03\x12\x11\n" +
+	"\rREFRESH_ERROR\x10\x042\xeb\x01\n" +
 	"\vAuthService\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x12Z\n" +
-	"\x13ConfirmRegistration\x12 .auth.ConfirmRegistrationRequest\x1a!.auth.ConfirmRegistrationResponseB\bZ\x06proto/b\x06proto3"
+	"\x13ConfirmRegistration\x12 .auth.ConfirmRegistrationRequest\x1a!.auth.ConfirmRegistrationResponse\x12E\n" +
+	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponseB\bZ\x06proto/b\x06proto3"
 
 var (
 	file_proto_auth_proto_rawDescOnce sync.Once
@@ -411,28 +592,34 @@ func file_proto_auth_proto_rawDescGZIP() []byte {
 	return file_proto_auth_proto_rawDescData
 }
 
-var file_proto_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_proto_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_proto_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_proto_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_auth_proto_goTypes = []any{
 	(RegisterStatus)(0),                 // 0: auth.RegisterStatus
 	(ConfirmRegistrationStatus)(0),      // 1: auth.ConfirmRegistrationStatus
-	(*RegisterRequest)(nil),             // 2: auth.RegisterRequest
-	(*RegisterResponse)(nil),            // 3: auth.RegisterResponse
-	(*ConfirmRegistrationRequest)(nil),  // 4: auth.ConfirmRegistrationRequest
-	(*ConfirmRegistrationResponse)(nil), // 5: auth.ConfirmRegistrationResponse
+	(RefreshTokenStatus)(0),             // 2: auth.RefreshTokenStatus
+	(*RegisterRequest)(nil),             // 3: auth.RegisterRequest
+	(*RegisterResponse)(nil),            // 4: auth.RegisterResponse
+	(*ConfirmRegistrationRequest)(nil),  // 5: auth.ConfirmRegistrationRequest
+	(*ConfirmRegistrationResponse)(nil), // 6: auth.ConfirmRegistrationResponse
+	(*RefreshTokenRequest)(nil),         // 7: auth.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),        // 8: auth.RefreshTokenResponse
 }
 var file_proto_auth_proto_depIdxs = []int32{
 	0, // 0: auth.RegisterResponse.status:type_name -> auth.RegisterStatus
 	1, // 1: auth.ConfirmRegistrationResponse.status:type_name -> auth.ConfirmRegistrationStatus
-	2, // 2: auth.AuthService.Register:input_type -> auth.RegisterRequest
-	4, // 3: auth.AuthService.ConfirmRegistration:input_type -> auth.ConfirmRegistrationRequest
-	3, // 4: auth.AuthService.Register:output_type -> auth.RegisterResponse
-	5, // 5: auth.AuthService.ConfirmRegistration:output_type -> auth.ConfirmRegistrationResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 2: auth.RefreshTokenResponse.status:type_name -> auth.RefreshTokenStatus
+	3, // 3: auth.AuthService.Register:input_type -> auth.RegisterRequest
+	5, // 4: auth.AuthService.ConfirmRegistration:input_type -> auth.ConfirmRegistrationRequest
+	7, // 5: auth.AuthService.RefreshToken:input_type -> auth.RefreshTokenRequest
+	4, // 6: auth.AuthService.Register:output_type -> auth.RegisterResponse
+	6, // 7: auth.AuthService.ConfirmRegistration:output_type -> auth.ConfirmRegistrationResponse
+	8, // 8: auth.AuthService.RefreshToken:output_type -> auth.RefreshTokenResponse
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_proto_auth_proto_init() }
@@ -445,8 +632,8 @@ func file_proto_auth_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_auth_proto_rawDesc), len(file_proto_auth_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   4,
+			NumEnums:      3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
