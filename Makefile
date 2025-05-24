@@ -9,6 +9,7 @@ setup:
 custom-gcl-build: setup
 	if [ -z $(CUSTOM_LINT) ]; then \
 		$$(which golangci-lint) custom; \
+		mkdir -p bin; \
 	fi
 
 lint: custom-gcl-build

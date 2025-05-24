@@ -48,7 +48,7 @@ linters:
         type: module
         description: Static analysis tool to detect potential nil panics in Go code.
         settings:
-          include-pkgs: "github.com/aliftechuz/pkg"
+          include-pkgs: ""
   exclusions:
     paths:
       - pkg
