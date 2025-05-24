@@ -28,6 +28,8 @@ type Params struct {
 type Service interface {
 	Registration(ctx context.Context, request Registration) (string, error)
 	ConfirmRegistration(ctx context.Context, id, code string) (*ConfirmResponse, error)
+
+	RefreshToken(ctx context.Context, token string) (string, error)
 }
 
 type service struct {
@@ -39,7 +41,7 @@ type service struct {
 	sessionRepo session.Repo
 }
 
-func New(p Params) Service {//nolint:gocritic
+func New(p Params) Service { //nolint:gocritic
 	return &service{
 		cache:            p.Cache,
 		emailTotpGateway: p.EmailTotpGateway,

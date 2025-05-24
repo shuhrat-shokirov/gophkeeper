@@ -8,6 +8,8 @@ option go_package = "proto/";
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
   rpc ConfirmRegistration(ConfirmRegistrationRequest) returns (ConfirmRegistrationResponse);
+
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
 message RegisterRequest {
@@ -43,7 +45,26 @@ enum ConfirmRegistrationStatus {
 
 message ConfirmRegistrationResponse {
   ConfirmRegistrationStatus status = 1;
-  int64 user_id = 2;   // возвращаем ID пользователя, если успех
-  string token = 3;     // JWT или session, чтобы сразу работать дальше
-  string message = 4;   // например: "Регистрация успешно подтверждена"
+  int64 user_id = 2;        // возвращаем ID пользователя, если успех
+  string token = 3;         // JWT или session, чтобы сразу работать дальше
+  string refresh_token = 4; // для обновления токена
+  string message = 5;       // например: "Регистрация успешно подтверждена"
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+enum RefreshTokenStatus {
+  REFRESH_STATUS_UNSPECIFIED = 0;
+  REFRESH_SUCCESS = 1;
+  INVALID_REFRESH_TOKEN = 2;
+  EXPIRED_REFRESH_TOKEN = 3;
+  REFRESH_ERROR = 4;
+}
+
+message RefreshTokenResponse {
+  RefreshTokenStatus status = 1;
+  string token = 2;               // новый JWT токен
+  string message = 3;             // сообщение об ошибке или успехе
 }

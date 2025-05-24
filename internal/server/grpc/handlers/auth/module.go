@@ -32,6 +32,8 @@ type Handler interface {
 	ConfirmRegistration(ctx context.Context,
 		request *pb.ConfirmRegistrationRequest) (*pb.ConfirmRegistrationResponse, error)
 
+	RefreshToken(ctx context.Context, request *pb.RefreshTokenRequest) (*pb.RefreshTokenResponse, error)
+
 	RegisterService(srv *grpc.Server)
 }
 
