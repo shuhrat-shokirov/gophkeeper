@@ -22,7 +22,6 @@ linters:
     - nestif
     - nilerr
     - nilnil
-    - nlreturn
     - noctx
     - perfsprint
     - prealloc

@@ -1,5 +1,11 @@
 package handlers
 
-import "go.uber.org/fx"
+import (
+	"go.uber.org/fx"
 
-var Module = fx.Options()
+	"gophkeeper/internal/server/grpc/handlers/auth"
+)
+
+var Module = fx.Options(
+	auth.Module,
+)

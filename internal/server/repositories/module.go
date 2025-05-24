@@ -1,5 +1,13 @@
 package repositories
 
-import "go.uber.org/fx"
+import (
+	"go.uber.org/fx"
 
-var Module = fx.Options()
+	"gophkeeper/internal/server/repositories/session"
+	"gophkeeper/internal/server/repositories/user"
+)
+
+var Module = fx.Options(
+	user.Module,
+	session.Module,
+)

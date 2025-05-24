@@ -1,5 +1,28 @@
 {
+  "grpc": {
+    "address": "localhost:9091"
+  },
   "logger": {
     "level": "debug"
+  },
+  "database": {
+    "dsn": "postgres://postgres:postgres@localhost:5432/goph_keeper_db"
+  },
+  "migration": {
+    "file": "file://migrations/server",
+    "dsn": "postgres://postgres:postgres@localhost:5432/goph_keeper_db?sslmode=disable"
+  },
+  "email": {
+    "mail": "",
+    "password": ""
+  },
+  "redis": {
+    "url": "localhost",
+    "port": 6379,
+    "password": "",
+    "db": 0
+  },
+  "jwt": {
+    "secret": ""
   }
 }

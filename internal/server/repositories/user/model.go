@@ -1,0 +1,9 @@
+package user
+
+type User struct {
+	ID        int
+	Email     string
+	Password  string
+	CreatedAt string
+	UpdatedAt string
+}

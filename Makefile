@@ -21,3 +21,8 @@ watch-lint:
 .PHONY: run custom-gcl-build lint
 
 .DEFAULT_GOAL:=run
+
+migrate:
+	migrate create -ext sql -dir migrations/$(service) -seq -digits 2 $(name)
+
+#example: make migrate name=auth service=server

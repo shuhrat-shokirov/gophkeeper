@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "proto/";
+
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc ConfirmRegistration(ConfirmRegistrationRequest) returns (ConfirmRegistrationResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+enum RegisterStatus {
+  REGISTER_STATUS_UNSPECIFIED = 0;
+  USER_ALREADY_EXISTS = 1;
+  OTP_SENT = 2;
+  REGISTER_ERROR = 3;
+}
+
+message RegisterResponse {
+  RegisterStatus status = 1;
+  string otp_id = 2; // ID для проверки OTP
+  string message = 3; // Сообщение об ошибке или успехе
+}
+message ConfirmRegistrationRequest {
+  string otp_id = 1;
+  string code = 2;
+}
+
+enum ConfirmRegistrationStatus {
+  CONFIRM_STATUS_UNSPECIFIED = 0;
+  CONFIRM_SUCCESS = 1;
+  INVALID_CODE = 2;
+  CODE_EXPIRED = 3;
+  USER_NOT_FOUND_CODE = 4;
+  CONFIRM_ERROR = 5;
+}
+
+message ConfirmRegistrationResponse {
+  ConfirmRegistrationStatus status = 1;
+  int64 user_id = 2;   // возвращаем ID пользователя, если успех
+  string token = 3;     // JWT или session, чтобы сразу работать дальше
+  string message = 4;   // например: "Регистрация успешно подтверждена"
+}
