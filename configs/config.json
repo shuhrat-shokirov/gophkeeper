@@ -1,0 +1,9 @@
+{
+  "server": {
+    "port": ":9999",
+    "basePath": "/api/go-template/v1"
+  },
+  "logger": {
+    "level": "debug"
+  }
+}
