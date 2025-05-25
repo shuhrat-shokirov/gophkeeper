@@ -29,8 +29,8 @@ type handler struct {
 
 type Handler interface {
 	Register(ctx context.Context, request *pb.RegisterRequest) (*pb.RegisterResponse, error)
-	ConfirmRegistration(ctx context.Context,
-		request *pb.ConfirmRegistrationRequest) (*pb.ConfirmRegistrationResponse, error)
+	ConfirmOTP(ctx context.Context,
+		request *pb.ConfirmOTPRequest) (*pb.ConfirmOTPResponse, error)
 
 	RefreshToken(ctx context.Context, request *pb.RefreshTokenRequest) (*pb.RefreshTokenResponse, error)
 

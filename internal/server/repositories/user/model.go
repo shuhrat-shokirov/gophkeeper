@@ -1,9 +1,11 @@
 package user
 
+import "time"
+
 type User struct {
 	ID        int
 	Email     string
 	Password  string
-	CreatedAt string
-	UpdatedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

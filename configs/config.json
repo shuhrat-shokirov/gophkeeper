@@ -23,6 +23,6 @@
     "db": 0
   },
   "jwt": {
-    "secret": ""
+    "private_key": ""
   }
 }
