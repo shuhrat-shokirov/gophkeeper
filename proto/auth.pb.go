@@ -73,20 +73,20 @@ func (RegisterStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{0}
 }
 
-type ConfirmRegistrationStatus int32
+type ConfirmOTPStatus int32
 
 const (
-	ConfirmRegistrationStatus_CONFIRM_STATUS_UNSPECIFIED ConfirmRegistrationStatus = 0
-	ConfirmRegistrationStatus_CONFIRM_SUCCESS            ConfirmRegistrationStatus = 1
-	ConfirmRegistrationStatus_INVALID_CODE               ConfirmRegistrationStatus = 2
-	ConfirmRegistrationStatus_CODE_EXPIRED               ConfirmRegistrationStatus = 3
-	ConfirmRegistrationStatus_USER_NOT_FOUND_CODE        ConfirmRegistrationStatus = 4
-	ConfirmRegistrationStatus_CONFIRM_ERROR              ConfirmRegistrationStatus = 5
+	ConfirmOTPStatus_CONFIRM_STATUS_UNSPECIFIED ConfirmOTPStatus = 0
+	ConfirmOTPStatus_CONFIRM_SUCCESS            ConfirmOTPStatus = 1
+	ConfirmOTPStatus_INVALID_CODE               ConfirmOTPStatus = 2
+	ConfirmOTPStatus_CODE_EXPIRED               ConfirmOTPStatus = 3
+	ConfirmOTPStatus_USER_NOT_FOUND_CODE        ConfirmOTPStatus = 4
+	ConfirmOTPStatus_CONFIRM_ERROR              ConfirmOTPStatus = 5
 )
 
-// Enum value maps for ConfirmRegistrationStatus.
+// Enum value maps for ConfirmOTPStatus.
 var (
-	ConfirmRegistrationStatus_name = map[int32]string{
+	ConfirmOTPStatus_name = map[int32]string{
 		0: "CONFIRM_STATUS_UNSPECIFIED",
 		1: "CONFIRM_SUCCESS",
 		2: "INVALID_CODE",
@@ -94,7 +94,7 @@ var (
 		4: "USER_NOT_FOUND_CODE",
 		5: "CONFIRM_ERROR",
 	}
-	ConfirmRegistrationStatus_value = map[string]int32{
+	ConfirmOTPStatus_value = map[string]int32{
 		"CONFIRM_STATUS_UNSPECIFIED": 0,
 		"CONFIRM_SUCCESS":            1,
 		"INVALID_CODE":               2,
@@ -104,30 +104,30 @@ var (
 	}
 )
 
-func (x ConfirmRegistrationStatus) Enum() *ConfirmRegistrationStatus {
-	p := new(ConfirmRegistrationStatus)
+func (x ConfirmOTPStatus) Enum() *ConfirmOTPStatus {
+	p := new(ConfirmOTPStatus)
 	*p = x
 	return p
 }
 
-func (x ConfirmRegistrationStatus) String() string {
+func (x ConfirmOTPStatus) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (ConfirmRegistrationStatus) Descriptor() protoreflect.EnumDescriptor {
+func (ConfirmOTPStatus) Descriptor() protoreflect.EnumDescriptor {
 	return file_proto_auth_proto_enumTypes[1].Descriptor()
 }
 
-func (ConfirmRegistrationStatus) Type() protoreflect.EnumType {
+func (ConfirmOTPStatus) Type() protoreflect.EnumType {
 	return &file_proto_auth_proto_enumTypes[1]
 }
 
-func (x ConfirmRegistrationStatus) Number() protoreflect.EnumNumber {
+func (x ConfirmOTPStatus) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use ConfirmRegistrationStatus.Descriptor instead.
-func (ConfirmRegistrationStatus) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use ConfirmOTPStatus.Descriptor instead.
+func (ConfirmOTPStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{1}
 }
 
@@ -298,7 +298,7 @@ func (x *RegisterResponse) GetMessage() string {
 	return ""
 }
 
-type ConfirmRegistrationRequest struct {
+type ConfirmOTPRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OtpId         string                 `protobuf:"bytes,1,opt,name=otp_id,json=otpId,proto3" json:"otp_id,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
@@ -306,20 +306,20 @@ type ConfirmRegistrationRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ConfirmRegistrationRequest) Reset() {
-	*x = ConfirmRegistrationRequest{}
+func (x *ConfirmOTPRequest) Reset() {
+	*x = ConfirmOTPRequest{}
 	mi := &file_proto_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ConfirmRegistrationRequest) String() string {
+func (x *ConfirmOTPRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ConfirmRegistrationRequest) ProtoMessage() {}
+func (*ConfirmOTPRequest) ProtoMessage() {}
 
-func (x *ConfirmRegistrationRequest) ProtoReflect() protoreflect.Message {
+func (x *ConfirmOTPRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -331,50 +331,50 @@ func (x *ConfirmRegistrationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ConfirmRegistrationRequest.ProtoReflect.Descriptor instead.
-func (*ConfirmRegistrationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ConfirmOTPRequest.ProtoReflect.Descriptor instead.
+func (*ConfirmOTPRequest) Descriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ConfirmRegistrationRequest) GetOtpId() string {
+func (x *ConfirmOTPRequest) GetOtpId() string {
 	if x != nil {
 		return x.OtpId
 	}
 	return ""
 }
 
-func (x *ConfirmRegistrationRequest) GetCode() string {
+func (x *ConfirmOTPRequest) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-type ConfirmRegistrationResponse struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Status        ConfirmRegistrationStatus `protobuf:"varint,1,opt,name=status,proto3,enum=auth.ConfirmRegistrationStatus" json:"status,omitempty"`
-	UserId        int64                     `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                  // возвращаем ID пользователя, если успех
-	Token         string                    `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`                                   // JWT или session, чтобы сразу работать дальше
-	RefreshToken  string                    `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"` // для обновления токена
-	Message       string                    `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                               // например: "Регистрация успешно подтверждена"
+type ConfirmOTPResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        ConfirmOTPStatus       `protobuf:"varint,1,opt,name=status,proto3,enum=auth.ConfirmOTPStatus" json:"status,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                  // возвращаем ID пользователя, если успех
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`                                   // JWT или session, чтобы сразу работать дальше
+	RefreshToken  string                 `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"` // для обновления токена
+	Message       string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                               // например: "Регистрация успешно подтверждена"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ConfirmRegistrationResponse) Reset() {
-	*x = ConfirmRegistrationResponse{}
+func (x *ConfirmOTPResponse) Reset() {
+	*x = ConfirmOTPResponse{}
 	mi := &file_proto_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ConfirmRegistrationResponse) String() string {
+func (x *ConfirmOTPResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ConfirmRegistrationResponse) ProtoMessage() {}
+func (*ConfirmOTPResponse) ProtoMessage() {}
 
-func (x *ConfirmRegistrationResponse) ProtoReflect() protoreflect.Message {
+func (x *ConfirmOTPResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -386,40 +386,40 @@ func (x *ConfirmRegistrationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ConfirmRegistrationResponse.ProtoReflect.Descriptor instead.
-func (*ConfirmRegistrationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ConfirmOTPResponse.ProtoReflect.Descriptor instead.
+func (*ConfirmOTPResponse) Descriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ConfirmRegistrationResponse) GetStatus() ConfirmRegistrationStatus {
+func (x *ConfirmOTPResponse) GetStatus() ConfirmOTPStatus {
 	if x != nil {
 		return x.Status
 	}
-	return ConfirmRegistrationStatus_CONFIRM_STATUS_UNSPECIFIED
+	return ConfirmOTPStatus_CONFIRM_STATUS_UNSPECIFIED
 }
 
-func (x *ConfirmRegistrationResponse) GetUserId() int64 {
+func (x *ConfirmOTPResponse) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *ConfirmRegistrationResponse) GetToken() string {
+func (x *ConfirmOTPResponse) GetToken() string {
 	if x != nil {
 		return x.Token
 	}
 	return ""
 }
 
-func (x *ConfirmRegistrationResponse) GetRefreshToken() string {
+func (x *ConfirmOTPResponse) GetRefreshToken() string {
 	if x != nil {
 		return x.RefreshToken
 	}
 	return ""
 }
 
-func (x *ConfirmRegistrationResponse) GetMessage() string {
+func (x *ConfirmOTPResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -541,12 +541,12 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\x10RegisterResponse\x12,\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x14.auth.RegisterStatusR\x06status\x12\x15\n" +
 	"\x06otp_id\x18\x02 \x01(\tR\x05otpId\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\"G\n" +
-	"\x1aConfirmRegistrationRequest\x12\x15\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\">\n" +
+	"\x11ConfirmOTPRequest\x12\x15\n" +
 	"\x06otp_id\x18\x01 \x01(\tR\x05otpId\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\"\xc4\x01\n" +
-	"\x1bConfirmRegistrationResponse\x127\n" +
-	"\x06status\x18\x01 \x01(\x0e2\x1f.auth.ConfirmRegistrationStatusR\x06status\x12\x17\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"\xb2\x01\n" +
+	"\x12ConfirmOTPResponse\x12.\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x16.auth.ConfirmOTPStatusR\x06status\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12\x14\n" +
 	"\x05token\x18\x03 \x01(\tR\x05token\x12#\n" +
 	"\rrefresh_token\x18\x04 \x01(\tR\frefreshToken\x12\x18\n" +
@@ -561,8 +561,8 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\x1bREGISTER_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13USER_ALREADY_EXISTS\x10\x01\x12\f\n" +
 	"\bOTP_SENT\x10\x02\x12\x12\n" +
-	"\x0eREGISTER_ERROR\x10\x03*\xa0\x01\n" +
-	"\x19ConfirmRegistrationStatus\x12\x1e\n" +
+	"\x0eREGISTER_ERROR\x10\x03*\x97\x01\n" +
+	"\x10ConfirmOTPStatus\x12\x1e\n" +
 	"\x1aCONFIRM_STATUS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fCONFIRM_SUCCESS\x10\x01\x12\x10\n" +
 	"\fINVALID_CODE\x10\x02\x12\x10\n" +
@@ -574,10 +574,11 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\x0fREFRESH_SUCCESS\x10\x01\x12\x19\n" +
 	"\x15INVALID_REFRESH_TOKEN\x10\x02\x12\x19\n" +
 	"\x15EXPIRED_REFRESH_TOKEN\x10\x03\x12\x11\n" +
-	"\rREFRESH_ERROR\x10\x042\xeb\x01\n" +
+	"\rREFRESH_ERROR\x10\x042\xd0\x01\n" +
 	"\vAuthService\x129\n" +
-	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x12Z\n" +
-	"\x13ConfirmRegistration\x12 .auth.ConfirmRegistrationRequest\x1a!.auth.ConfirmRegistrationResponse\x12E\n" +
+	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x12?\n" +
+	"\n" +
+	"ConfirmOTP\x12\x17.auth.ConfirmOTPRequest\x1a\x18.auth.ConfirmOTPResponse\x12E\n" +
 	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponseB\bZ\x06proto/b\x06proto3"
 
 var (
@@ -595,25 +596,25 @@ func file_proto_auth_proto_rawDescGZIP() []byte {
 var file_proto_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_proto_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_auth_proto_goTypes = []any{
-	(RegisterStatus)(0),                 // 0: auth.RegisterStatus
-	(ConfirmRegistrationStatus)(0),      // 1: auth.ConfirmRegistrationStatus
-	(RefreshTokenStatus)(0),             // 2: auth.RefreshTokenStatus
-	(*RegisterRequest)(nil),             // 3: auth.RegisterRequest
-	(*RegisterResponse)(nil),            // 4: auth.RegisterResponse
-	(*ConfirmRegistrationRequest)(nil),  // 5: auth.ConfirmRegistrationRequest
-	(*ConfirmRegistrationResponse)(nil), // 6: auth.ConfirmRegistrationResponse
-	(*RefreshTokenRequest)(nil),         // 7: auth.RefreshTokenRequest
-	(*RefreshTokenResponse)(nil),        // 8: auth.RefreshTokenResponse
+	(RegisterStatus)(0),          // 0: auth.RegisterStatus
+	(ConfirmOTPStatus)(0),        // 1: auth.ConfirmOTPStatus
+	(RefreshTokenStatus)(0),      // 2: auth.RefreshTokenStatus
+	(*RegisterRequest)(nil),      // 3: auth.RegisterRequest
+	(*RegisterResponse)(nil),     // 4: auth.RegisterResponse
+	(*ConfirmOTPRequest)(nil),    // 5: auth.ConfirmOTPRequest
+	(*ConfirmOTPResponse)(nil),   // 6: auth.ConfirmOTPResponse
+	(*RefreshTokenRequest)(nil),  // 7: auth.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil), // 8: auth.RefreshTokenResponse
 }
 var file_proto_auth_proto_depIdxs = []int32{
 	0, // 0: auth.RegisterResponse.status:type_name -> auth.RegisterStatus
-	1, // 1: auth.ConfirmRegistrationResponse.status:type_name -> auth.ConfirmRegistrationStatus
+	1, // 1: auth.ConfirmOTPResponse.status:type_name -> auth.ConfirmOTPStatus
 	2, // 2: auth.RefreshTokenResponse.status:type_name -> auth.RefreshTokenStatus
 	3, // 3: auth.AuthService.Register:input_type -> auth.RegisterRequest
-	5, // 4: auth.AuthService.ConfirmRegistration:input_type -> auth.ConfirmRegistrationRequest
+	5, // 4: auth.AuthService.ConfirmOTP:input_type -> auth.ConfirmOTPRequest
 	7, // 5: auth.AuthService.RefreshToken:input_type -> auth.RefreshTokenRequest
 	4, // 6: auth.AuthService.Register:output_type -> auth.RegisterResponse
-	6, // 7: auth.AuthService.ConfirmRegistration:output_type -> auth.ConfirmRegistrationResponse
+	6, // 7: auth.AuthService.ConfirmOTP:output_type -> auth.ConfirmOTPResponse
 	8, // 8: auth.AuthService.RefreshToken:output_type -> auth.RefreshTokenResponse
 	6, // [6:9] is the sub-list for method output_type
 	3, // [3:6] is the sub-list for method input_type

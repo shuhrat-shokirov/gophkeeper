@@ -8,8 +8,8 @@ import (
 	"gophkeeper/internal/server/gateways/emailtotp"
 	"gophkeeper/internal/server/repositories/session"
 	"gophkeeper/internal/server/repositories/user"
-	"gophkeeper/pkg/cache"
 	"gophkeeper/pkg/jwt"
+	"gophkeeper/pkg/redis"
 )
 
 var Module = fx.Provide(New)
@@ -17,7 +17,7 @@ var Module = fx.Provide(New)
 type Params struct {
 	fx.In
 
-	Cache            cache.Cache
+	Cache            redis.Cache
 	EmailTotpGateway emailtotp.Gateway
 	JWT              jwt.JWT
 
@@ -27,13 +27,13 @@ type Params struct {
 
 type Service interface {
 	Registration(ctx context.Context, request Registration) (string, error)
-	ConfirmRegistration(ctx context.Context, id, code string) (*ConfirmResponse, error)
+	ConfirmOTP(ctx context.Context, id, code string) (*ConfirmResponse, error)
 
 	RefreshToken(ctx context.Context, token string) (string, error)
 }
 
 type service struct {
-	cache            cache.Cache
+	cache            redis.Cache
 	emailTotpGateway emailtotp.Gateway
 	jwt              jwt.JWT
 

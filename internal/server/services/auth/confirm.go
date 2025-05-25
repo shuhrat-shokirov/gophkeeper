@@ -2,30 +2,25 @@ package auth
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 
 	"gophkeeper/internal/server/exceptions"
 	"gophkeeper/internal/server/repositories/session"
 )
 
-func (s *service) ConfirmRegistration(ctx context.Context, id, code string) (*ConfirmResponse, error) {
-	cacheKey := otpRegisterKeyPrefix + id
-	value, err := s.cache.Find(ctx, cacheKey)
+func (s *service) ConfirmOTP(ctx context.Context, id, code string) (*ConfirmResponse, error) {
+	cacheKey := otpKeyPrefix + id
+	var otp otpVerification
+
+	err := s.cache.Find(ctx, cacheKey, &otp)
 	if err != nil {
 		if errors.Is(err, exceptions.ErrNotFound) {
 			return nil, exceptions.ErrOTPExpired
 		}
 
 		return nil, fmt.Errorf("cache find error: %w", err)
-	}
-
-	var otp otpVerification
-
-	err = json.Unmarshal(value, &otp)
-	if err != nil {
-		return nil, fmt.Errorf("unmarshal otp verification error: %w", err)
 	}
 
 	if otp.Otp != code {
@@ -54,10 +49,13 @@ func (s *service) ConfirmRegistration(ctx context.Context, id, code string) (*Co
 		return nil, fmt.Errorf("error creating session: %w", err)
 	}
 
+	log.Printf("access token: %s, refresh token: %s", pair.AccessToken, pair.RefreshToken)
+
 	_ = s.cache.Delete(ctx, cacheKey)
 
 	return &ConfirmResponse{
-		UserId: otp.UserID,
-		Token:  pair.AccessToken,
+		UserId:       otp.UserID,
+		Token:        pair.AccessToken,
+		RefreshToken: pair.RefreshToken,
 	}, nil
 }

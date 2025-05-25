@@ -11,12 +11,14 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"gophkeeper/internal/server/grpc/handlers"
 	"gophkeeper/internal/server/grpc/handlers/auth"
 	"gophkeeper/pkg/config"
 	"gophkeeper/pkg/logger"
 )
 
 var Module = fx.Options(
+	handlers.Module,
 	fx.Invoke(New),
 )
 

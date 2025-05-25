@@ -39,7 +39,7 @@ func (g *gateway) SendEmail(_ context.Context, request *Request) error {
 	m.SetHeader("From", g.mail)
 	m.SetHeader("To", request.To)
 	m.SetHeader("Subject", request.Subject)
-	m.SetBody("text/plain", request.Body)
+	m.SetBody("text/html", request.Body)
 
 	d := gomail.NewDialer("smtp.gmail.com", 587, g.mail, g.password)
 	if err := d.DialAndSend(m); err != nil {

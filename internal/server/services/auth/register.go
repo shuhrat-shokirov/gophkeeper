@@ -59,7 +59,7 @@ func (s *service) Registration(ctx context.Context, request Registration) (strin
 	}
 
 	uuid := utils.GenerateShortUUID()
-	cacheKey := otpRegisterKeyPrefix + uuid
+	cacheKey := otpKeyPrefix + uuid
 
 	if err := s.cache.Save(ctx, cacheKey, otpVerification{
 		UserID: userID,
@@ -77,6 +77,6 @@ type otpVerification struct {
 }
 
 const (
-	otpExpiration        = 5 * time.Minute // OTP expiration time
-	otpRegisterKeyPrefix = "otp_register:" // Prefix for OTP keys in cache
+	otpExpiration = 5 * time.Minute // OTP expiration time
+	otpKeyPrefix  = "otp:"          // Prefix for OTP keys in cache
 )

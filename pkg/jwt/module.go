@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"strconv"
 	"time"
 
 	"go.uber.org/fx"
@@ -28,13 +27,18 @@ type JWT interface {
 }
 
 type jwtI struct {
-	jwtSecret string
+	privateKey []byte
 }
 
-func New(p Params) JWT {
-	return &jwtI{
-		jwtSecret: p.Config.GetString("jwt.secret"),
+func New(p Params) (JWT, error) {
+	decodeString, err := base64.StdEncoding.DecodeString(p.Config.GetString("jwt.private_key"))
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode private key: %w", err)
 	}
+
+	return &jwtI{
+		privateKey: decodeString,
+	}, nil
 }
 
 type TokenPair struct {
@@ -63,20 +67,27 @@ func (j *jwtI) GenerateTokenPair(userID int) (*TokenPair, error) {
 
 // GenerateOnlyAccessToken generates only the access token without a refresh token.
 func (j *jwtI) GenerateOnlyAccessToken(userID int) (string, error) {
-	// Access token (JWT)
-	accessTokenClaims := jwt.MapClaims{
-		"user_id": strconv.Itoa(userID),
-		"exp":     time.Now().Add(30 * time.Minute).Unix(),
-		"iat":     time.Now().Unix(),
-	}
 
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString(j.jwtSecret)
+	key, err := jwt.ParseRSAPrivateKeyFromPEM(j.privateKey)
 	if err != nil {
-		return "", fmt.Errorf("failed to sign access token: %w", err)
+		return "", fmt.Errorf("create: parse key: %w", err)
 	}
 
-	return accessTokenString, nil
+	now := time.Now().UTC()
+
+	claims := make(jwt.MapClaims)
+	claims["user_id"] = userID                       // User ID
+	claims["exp"] = now.Add(30 * time.Minute).Unix() // Expiration time (30 minutes)
+	claims["iat"] = now.Unix()                       // Issued at time
+	claims["nbf"] = now.Unix()                       // Not before time
+	claims["iss"] = "gophkeeper"                     // Issuer
+
+	token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, claims).SignedString(key)
+	if err != nil {
+		return "", fmt.Errorf("create: sign token: %w", err)
+	}
+
+	return token, nil
 }
 
 // Helper: generates a cryptographically secure random string
@@ -86,4 +97,29 @@ func generateSecureToken(length int) (string, error) {
 		return "", err
 	}
 	return base64.URLEncoding.EncodeToString(bytes), nil
+}
+
+func Parse(token string, publicKey []byte) (jwt.Claims, error) {
+	key, err := jwt.ParseRSAPublicKeyFromPEM(publicKey)
+	if err != nil {
+		return nil, fmt.Errorf("validate: parse key: %w", err)
+	}
+
+	tok, err := jwt.Parse(token, func(jwtToken *jwt.Token) (any, error) {
+		if _, ok := jwtToken.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, fmt.Errorf("unexpected method: %s", jwtToken.Header["alg"])
+		}
+
+		return key, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("validate: %w", err)
+	}
+
+	claims, ok := tok.Claims.(jwt.MapClaims)
+	if !ok || !tok.Valid {
+		return nil, fmt.Errorf("validate: invalid")
+	}
+
+	return claims, nil
 }

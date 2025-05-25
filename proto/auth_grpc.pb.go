@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_Register_FullMethodName            = "/auth.AuthService/Register"
-	AuthService_ConfirmRegistration_FullMethodName = "/auth.AuthService/ConfirmRegistration"
-	AuthService_RefreshToken_FullMethodName        = "/auth.AuthService/RefreshToken"
+	AuthService_Register_FullMethodName     = "/auth.AuthService/Register"
+	AuthService_ConfirmOTP_FullMethodName   = "/auth.AuthService/ConfirmOTP"
+	AuthService_RefreshToken_FullMethodName = "/auth.AuthService/RefreshToken"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
-	ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, opts ...grpc.CallOption) (*ConfirmRegistrationResponse, error)
+	ConfirmOTP(ctx context.Context, in *ConfirmOTPRequest, opts ...grpc.CallOption) (*ConfirmOTPResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 }
 
@@ -51,10 +51,10 @@ func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, o
 	return out, nil
 }
 
-func (c *authServiceClient) ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, opts ...grpc.CallOption) (*ConfirmRegistrationResponse, error) {
+func (c *authServiceClient) ConfirmOTP(ctx context.Context, in *ConfirmOTPRequest, opts ...grpc.CallOption) (*ConfirmOTPResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ConfirmRegistrationResponse)
-	err := c.cc.Invoke(ctx, AuthService_ConfirmRegistration_FullMethodName, in, out, cOpts...)
+	out := new(ConfirmOTPResponse)
+	err := c.cc.Invoke(ctx, AuthService_ConfirmOTP_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (c *authServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenRe
 // for forward compatibility.
 type AuthServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
-	ConfirmRegistration(context.Context, *ConfirmRegistrationRequest) (*ConfirmRegistrationResponse, error)
+	ConfirmOTP(context.Context, *ConfirmOTPRequest) (*ConfirmOTPResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
@@ -91,8 +91,8 @@ type UnimplementedAuthServiceServer struct{}
 func (UnimplementedAuthServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedAuthServiceServer) ConfirmRegistration(context.Context, *ConfirmRegistrationRequest) (*ConfirmRegistrationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConfirmRegistration not implemented")
+func (UnimplementedAuthServiceServer) ConfirmOTP(context.Context, *ConfirmOTPRequest) (*ConfirmOTPResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmOTP not implemented")
 }
 func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
@@ -136,20 +136,20 @@ func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_ConfirmRegistration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ConfirmRegistrationRequest)
+func _AuthService_ConfirmOTP_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmOTPRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).ConfirmRegistration(ctx, in)
+		return srv.(AuthServiceServer).ConfirmOTP(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_ConfirmRegistration_FullMethodName,
+		FullMethod: AuthService_ConfirmOTP_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).ConfirmRegistration(ctx, req.(*ConfirmRegistrationRequest))
+		return srv.(AuthServiceServer).ConfirmOTP(ctx, req.(*ConfirmOTPRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -184,8 +184,8 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_Register_Handler,
 		},
 		{
-			MethodName: "ConfirmRegistration",
-			Handler:    _AuthService_ConfirmRegistration_Handler,
+			MethodName: "ConfirmOTP",
+			Handler:    _AuthService_ConfirmOTP_Handler,
 		},
 		{
 			MethodName: "RefreshToken",

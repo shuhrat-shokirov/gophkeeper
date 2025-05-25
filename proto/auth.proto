@@ -7,7 +7,7 @@ option go_package = "proto/";
 
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
-  rpc ConfirmRegistration(ConfirmRegistrationRequest) returns (ConfirmRegistrationResponse);
+  rpc ConfirmOTP(ConfirmOTPRequest) returns (ConfirmOTPResponse);
 
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 }
@@ -29,12 +29,12 @@ message RegisterResponse {
   string otp_id = 2; // ID для проверки OTP
   string message = 3; // Сообщение об ошибке или успехе
 }
-message ConfirmRegistrationRequest {
+message ConfirmOTPRequest {
   string otp_id = 1;
   string code = 2;
 }
 
-enum ConfirmRegistrationStatus {
+enum ConfirmOTPStatus {
   CONFIRM_STATUS_UNSPECIFIED = 0;
   CONFIRM_SUCCESS = 1;
   INVALID_CODE = 2;
@@ -43,8 +43,8 @@ enum ConfirmRegistrationStatus {
   CONFIRM_ERROR = 5;
 }
 
-message ConfirmRegistrationResponse {
-  ConfirmRegistrationStatus status = 1;
+message ConfirmOTPResponse {
+  ConfirmOTPStatus status = 1;
   int64 user_id = 2;        // возвращаем ID пользователя, если успех
   string token = 3;         // JWT или session, чтобы сразу работать дальше
   string refresh_token = 4; // для обновления токена

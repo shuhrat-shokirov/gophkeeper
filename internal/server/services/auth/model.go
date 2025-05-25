@@ -6,6 +6,7 @@ type Registration struct {
 }
 
 type ConfirmResponse struct {
-	UserId int
-	Token  string
+	UserId       int
+	Token        string
+	RefreshToken string
 }
