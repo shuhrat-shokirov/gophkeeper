@@ -36,9 +36,25 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 				return constants.StateLoginPassword, "Ошибка регистрации: " + err.Error(),
 					fmt.Errorf("failed to register: %w", err)
 			}
+
+			h.typing = "otp"
+			h.password = nil
+			return constants.StateOtpRequested, "OTP отправлен на почту. Введите код:", nil
+		}
+
+		err := h.authService.Login(ctx, string(h.email), string(h.password))
+		if err != nil {
+			if errors.Is(err, exceptions.ErrInvalidCredentials) {
+				return constants.StateLoginPassword, "Неверный email или пароль. Пожалуйста, попробуйте снова:", nil
+			}
+
+			return constants.StateLoginPassword, "Ошибка входа: " + err.Error(),
+				fmt.Errorf("failed to login: %w", err)
 		}
 
 		h.typing = "otp"
+		h.isLogin = true
+		h.password = nil
 		return constants.StateOtpRequested, "OTP отправлен на почту. Введите код:", nil
 
 	case input == constants.CmdBack && len(h.password) > 0:

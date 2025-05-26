@@ -8,4 +8,5 @@ var (
 	ErrInvalidOTP          = errors.New("invalid OTP")
 	ErrOTPExpired          = errors.New("OTP expired")
 	ErrRefreshTokenExpired = errors.New("refresh token expired")
+	ErrInvalidCredentials  = errors.New("invalid credentials")
 )

@@ -23,12 +23,12 @@ func (s *service) Register(ctx context.Context, email, password string) error {
 		return fmt.Errorf("register error: %w", err)
 	}
 
-	s.cache.Set(otpCodeKey, otpID, cacheTimeRegistration)
+	s.cache.Set(otpCodeKey, otpID, cacheDuration)
 
 	return nil
 }
 
 const (
-	cacheTimeRegistration = 5 * time.Minute
-	otpCodeKey            = "otp_code"
+	cacheDuration = 5 * time.Minute
+	otpCodeKey    = "otp_code"
 )

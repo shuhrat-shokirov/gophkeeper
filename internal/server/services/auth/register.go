@@ -39,6 +39,15 @@ func (s *service) Registration(ctx context.Context, request Registration) (strin
 		return "", fmt.Errorf("error creating user: %w", err)
 	}
 
+	otpId, err := s.senOtp(ctx, userID, request.Email)
+	if err != nil {
+		return "", fmt.Errorf("error sending OTP: %w", err)
+	}
+
+	return otpId, nil
+}
+
+func (s *service) senOtp(ctx context.Context, userID int, email string) (string, error) {
 	otp, err := utils.GenerateOTP()
 	if err != nil {
 		return "", fmt.Errorf("error generating OTP: %w", err)
@@ -50,7 +59,7 @@ func (s *service) Registration(ctx context.Context, request Registration) (strin
 	}
 
 	err = s.emailTotpGateway.SendEmail(ctx, &emailtotp.Request{
-		To:      request.Email,
+		To:      email,
 		Subject: "Your One-Time Password",
 		Body:    message,
 	})

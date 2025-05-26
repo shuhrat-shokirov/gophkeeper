@@ -186,6 +186,58 @@ func (RefreshTokenStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_auth_proto_rawDescGZIP(), []int{2}
 }
 
+type LoginStatus int32
+
+const (
+	LoginStatus_LOGIN_STATUS_UNSPECIFIED LoginStatus = 0
+	LoginStatus_LOGIN_SUCCESS            LoginStatus = 1
+	LoginStatus_INVALID_CREDENTIALS      LoginStatus = 2
+	LoginStatus_LOGIN_ERROR              LoginStatus = 4
+)
+
+// Enum value maps for LoginStatus.
+var (
+	LoginStatus_name = map[int32]string{
+		0: "LOGIN_STATUS_UNSPECIFIED",
+		1: "LOGIN_SUCCESS",
+		2: "INVALID_CREDENTIALS",
+		4: "LOGIN_ERROR",
+	}
+	LoginStatus_value = map[string]int32{
+		"LOGIN_STATUS_UNSPECIFIED": 0,
+		"LOGIN_SUCCESS":            1,
+		"INVALID_CREDENTIALS":      2,
+		"LOGIN_ERROR":              4,
+	}
+)
+
+func (x LoginStatus) Enum() *LoginStatus {
+	p := new(LoginStatus)
+	*p = x
+	return p
+}
+
+func (x LoginStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LoginStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_auth_proto_enumTypes[3].Descriptor()
+}
+
+func (LoginStatus) Type() protoreflect.EnumType {
+	return &file_proto_auth_proto_enumTypes[3]
+}
+
+func (x LoginStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LoginStatus.Descriptor instead.
+func (LoginStatus) EnumDescriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{3}
+}
+
 type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
@@ -530,6 +582,118 @@ func (x *RefreshTokenResponse) GetMessage() string {
 	return ""
 }
 
+type LoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	mi := &file_proto_auth_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *LoginRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type LoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        LoginStatus            `protobuf:"varint,1,opt,name=status,proto3,enum=auth.LoginStatus" json:"status,omitempty"`
+	OtpId         string                 `protobuf:"bytes,2,opt,name=otp_id,json=otpId,proto3" json:"otp_id,omitempty"` // ID для проверки OTP
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`          // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginResponse) Reset() {
+	*x = LoginResponse{}
+	mi := &file_proto_auth_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginResponse) ProtoMessage() {}
+
+func (x *LoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
+func (*LoginResponse) Descriptor() ([]byte, []int) {
+	return file_proto_auth_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *LoginResponse) GetStatus() LoginStatus {
+	if x != nil {
+		return x.Status
+	}
+	return LoginStatus_LOGIN_STATUS_UNSPECIFIED
+}
+
+func (x *LoginResponse) GetOtpId() string {
+	if x != nil {
+		return x.OtpId
+	}
+	return ""
+}
+
+func (x *LoginResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_proto_auth_proto protoreflect.FileDescriptor
 
 const file_proto_auth_proto_rawDesc = "" +
@@ -556,6 +720,13 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\x14RefreshTokenResponse\x120\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x18.auth.RefreshTokenStatusR\x06status\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"@\n" +
+	"\fLoginRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"k\n" +
+	"\rLoginResponse\x12)\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x11.auth.LoginStatusR\x06status\x12\x15\n" +
+	"\x06otp_id\x18\x02 \x01(\tR\x05otpId\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage*l\n" +
 	"\x0eRegisterStatus\x12\x1f\n" +
 	"\x1bREGISTER_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
@@ -574,11 +745,17 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\x0fREFRESH_SUCCESS\x10\x01\x12\x19\n" +
 	"\x15INVALID_REFRESH_TOKEN\x10\x02\x12\x19\n" +
 	"\x15EXPIRED_REFRESH_TOKEN\x10\x03\x12\x11\n" +
-	"\rREFRESH_ERROR\x10\x042\xd0\x01\n" +
+	"\rREFRESH_ERROR\x10\x04*h\n" +
+	"\vLoginStatus\x12\x1c\n" +
+	"\x18LOGIN_STATUS_UNSPECIFIED\x10\x00\x12\x11\n" +
+	"\rLOGIN_SUCCESS\x10\x01\x12\x17\n" +
+	"\x13INVALID_CREDENTIALS\x10\x02\x12\x0f\n" +
+	"\vLOGIN_ERROR\x10\x042\x82\x02\n" +
 	"\vAuthService\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x12?\n" +
 	"\n" +
-	"ConfirmOTP\x12\x17.auth.ConfirmOTPRequest\x1a\x18.auth.ConfirmOTPResponse\x12E\n" +
+	"ConfirmOTP\x12\x17.auth.ConfirmOTPRequest\x1a\x18.auth.ConfirmOTPResponse\x120\n" +
+	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x12E\n" +
 	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponseB\bZ\x06proto/b\x06proto3"
 
 var (
@@ -593,34 +770,40 @@ func file_proto_auth_proto_rawDescGZIP() []byte {
 	return file_proto_auth_proto_rawDescData
 }
 
-var file_proto_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_proto_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_proto_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_proto_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_proto_auth_proto_goTypes = []any{
 	(RegisterStatus)(0),          // 0: auth.RegisterStatus
 	(ConfirmOTPStatus)(0),        // 1: auth.ConfirmOTPStatus
 	(RefreshTokenStatus)(0),      // 2: auth.RefreshTokenStatus
-	(*RegisterRequest)(nil),      // 3: auth.RegisterRequest
-	(*RegisterResponse)(nil),     // 4: auth.RegisterResponse
-	(*ConfirmOTPRequest)(nil),    // 5: auth.ConfirmOTPRequest
-	(*ConfirmOTPResponse)(nil),   // 6: auth.ConfirmOTPResponse
-	(*RefreshTokenRequest)(nil),  // 7: auth.RefreshTokenRequest
-	(*RefreshTokenResponse)(nil), // 8: auth.RefreshTokenResponse
+	(LoginStatus)(0),             // 3: auth.LoginStatus
+	(*RegisterRequest)(nil),      // 4: auth.RegisterRequest
+	(*RegisterResponse)(nil),     // 5: auth.RegisterResponse
+	(*ConfirmOTPRequest)(nil),    // 6: auth.ConfirmOTPRequest
+	(*ConfirmOTPResponse)(nil),   // 7: auth.ConfirmOTPResponse
+	(*RefreshTokenRequest)(nil),  // 8: auth.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil), // 9: auth.RefreshTokenResponse
+	(*LoginRequest)(nil),         // 10: auth.LoginRequest
+	(*LoginResponse)(nil),        // 11: auth.LoginResponse
 }
 var file_proto_auth_proto_depIdxs = []int32{
-	0, // 0: auth.RegisterResponse.status:type_name -> auth.RegisterStatus
-	1, // 1: auth.ConfirmOTPResponse.status:type_name -> auth.ConfirmOTPStatus
-	2, // 2: auth.RefreshTokenResponse.status:type_name -> auth.RefreshTokenStatus
-	3, // 3: auth.AuthService.Register:input_type -> auth.RegisterRequest
-	5, // 4: auth.AuthService.ConfirmOTP:input_type -> auth.ConfirmOTPRequest
-	7, // 5: auth.AuthService.RefreshToken:input_type -> auth.RefreshTokenRequest
-	4, // 6: auth.AuthService.Register:output_type -> auth.RegisterResponse
-	6, // 7: auth.AuthService.ConfirmOTP:output_type -> auth.ConfirmOTPResponse
-	8, // 8: auth.AuthService.RefreshToken:output_type -> auth.RefreshTokenResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: auth.RegisterResponse.status:type_name -> auth.RegisterStatus
+	1,  // 1: auth.ConfirmOTPResponse.status:type_name -> auth.ConfirmOTPStatus
+	2,  // 2: auth.RefreshTokenResponse.status:type_name -> auth.RefreshTokenStatus
+	3,  // 3: auth.LoginResponse.status:type_name -> auth.LoginStatus
+	4,  // 4: auth.AuthService.Register:input_type -> auth.RegisterRequest
+	6,  // 5: auth.AuthService.ConfirmOTP:input_type -> auth.ConfirmOTPRequest
+	10, // 6: auth.AuthService.Login:input_type -> auth.LoginRequest
+	8,  // 7: auth.AuthService.RefreshToken:input_type -> auth.RefreshTokenRequest
+	5,  // 8: auth.AuthService.Register:output_type -> auth.RegisterResponse
+	7,  // 9: auth.AuthService.ConfirmOTP:output_type -> auth.ConfirmOTPResponse
+	11, // 10: auth.AuthService.Login:output_type -> auth.LoginResponse
+	9,  // 11: auth.AuthService.RefreshToken:output_type -> auth.RefreshTokenResponse
+	8,  // [8:12] is the sub-list for method output_type
+	4,  // [4:8] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_proto_auth_proto_init() }
@@ -633,8 +816,8 @@ func file_proto_auth_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_auth_proto_rawDesc), len(file_proto_auth_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   6,
+			NumEnums:      4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
