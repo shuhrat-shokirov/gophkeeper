@@ -29,6 +29,7 @@ type Service interface {
 	Registration(ctx context.Context, request Registration) (string, error)
 	ConfirmOTP(ctx context.Context, id, code string) (*ConfirmResponse, error)
 	Login(ctx context.Context, email, password string) (string, error)
+	Logout(ctx context.Context, accessToken string) error
 
 	RefreshToken(ctx context.Context, token string) (string, error)
 }

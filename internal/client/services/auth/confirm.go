@@ -23,10 +23,6 @@ func (s *service) ConfirmOTP(ctx context.Context, code string) error {
 
 	s.accessToken = token.AccessToken
 	s.refreshToken = token.RefreshToken
-	if err := writeEnvFile(s.accessToken, s.refreshToken); err != nil {
-		return fmt.Errorf("failed to write tokens to .env file: %w", err)
-	}
-
 	return nil
 }
 

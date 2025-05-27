@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -22,6 +23,7 @@ type Service interface {
 	CheckAuth(ctx context.Context) error
 
 	Login(ctx context.Context, email, password string) error
+	Logout(ctx context.Context)
 }
 
 type Params struct {
@@ -41,7 +43,7 @@ type service struct {
 	publicKey    []byte
 }
 
-func New(p Params) Service {
+func New(p Params) (Service, error) {
 
 	_ = godotenv.Load(".env")
 
@@ -49,7 +51,7 @@ func New(p Params) Service {
 	publicKey := "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6eUtPY2R1c0dJTy9VLzZnRTFsNAp0Z3Z4KzR5TUExQ1pQRkYwRnhKbzJaS1ZTY3I4SU41RVVDUDlUeEsxRTJLc2xnS01zQkhnYldJY3ZHMFBpTXZUClo0dTB3SWlPaTVSMDNlK3I5V1NqOG1xSCs3UjU1VndybUZVbFdMRWxuT1E4MnYveWNpV2hPZFJURWJ5cTZYQWcKaU5BckZyL3NFRTBacHFPdlVSeEFmeG5Qb1ZGd3M4NUplU0FYR1c2aG9HK3FoeEIvZ3diYkZOVitpbXViZUZ6dApyd1NJUGdmNjR2d2RoWnpDY1JZOVRUK1dyRm16Yk5uZmNwSzNvZEVnOCszdVJaWDdBb2R0U2E5OTZPTFFOcFNJClFnUDRiMnBXem5hc0NlRHU3ZlBWME5GNkJmSG1hcCs3RHZORTk1blcxUUh2MzZRRzNoVVRmZ0ZZQVJoc0NrOTAKcndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
 	bytes, err := base64.StdEncoding.DecodeString(publicKey)
 	if err != nil {
-		log.Fatalf("failed to decode public key: %v", err)
+		return nil, fmt.Errorf("decode public key: %w", err)
 	}
 
 	s := &service{
@@ -96,5 +98,5 @@ func New(p Params) Service {
 		},
 	})
 
-	return s
+	return s, nil
 }

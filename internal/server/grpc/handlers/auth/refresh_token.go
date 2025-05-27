@@ -18,12 +18,6 @@ func (h *handler) RefreshToken(ctx context.Context, request *pb.RefreshTokenRequ
 				Message: "Invalid refresh token",
 			}, nil
 		}
-		if errors.Is(err, exceptions.ErrRefreshTokenExpired) {
-			return &pb.RefreshTokenResponse{
-				Status:  pb.RefreshTokenStatus_EXPIRED_REFRESH_TOKEN,
-				Message: "Refresh token has expired",
-			}, nil
-		}
 
 		return &pb.RefreshTokenResponse{
 			Status:  pb.RefreshTokenStatus_REFRESH_ERROR,

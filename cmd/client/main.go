@@ -23,5 +23,5 @@ func main() {
 		services.Module,
 
 		tui.Module,
-	)
+	).Run()
 }

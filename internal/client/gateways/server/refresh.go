@@ -16,10 +16,6 @@ func (g *gateway) RefreshToken(ctx context.Context, refreshToken string) (*Token
 		return nil, fmt.Errorf("failed to refresh token: %w", err)
 	}
 
-	if resp.GetStatus() == pb.RefreshTokenStatus_EXPIRED_REFRESH_TOKEN {
-		return nil, exceptions.ErrRefreshTokenExpired
-	}
-
 	if resp.GetStatus() == pb.RefreshTokenStatus_INVALID_REFRESH_TOKEN {
 		return nil, exceptions.ErrRefreshTokenInvalid
 	}
