@@ -15,7 +15,7 @@ func (r *repo) Get(ctx context.Context, refreshToken string) (*Session, error) {
 SELECT id, user_id, refresh_token, created_at, updated_at, expired_at
 FROM sessions
 WHERE refresh_token = $1 and expired_at > NOW()`,
-refreshToken).Scan(
+		refreshToken).Scan(
 		&session.ID,
 		&session.UserID,
 		&session.RefreshToken,
