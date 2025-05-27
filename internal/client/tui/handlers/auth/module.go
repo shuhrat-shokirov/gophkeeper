@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"os"
 
 	"go.uber.org/fx"
 
@@ -47,17 +48,26 @@ var ignoreInput = map[string]bool{
 }
 
 func (h *handler) HandleInput(state, input string) (nextState, screen string, err error) {
+	if input == constants.CmdForceQuit {
+		os.Exit(0)
+		return
+	}
+
 	switch state {
 	case constants.StateMainMenu:
 		return h.stateMainMenu(input)
+	case constants.StateAuthorizedMainMenu:
+		return h.stateAuthorizedMainMenu(input)
 	case constants.StateLoginEmail:
 		return h.stateLoginEmail(input)
 	case constants.StateLoginPassword:
 		return h.stateLoginPassword(input)
 	case constants.StateOtpRequested:
 		return h.stateOtpRequested(input)
-	case constants.StateAuthorizedMainMenu:
-
+	case constants.StateLogout:
+		return h.stateLogout(input)
+	case constants.StateQuit:
+		return h.stateQuit(input)
 	}
 
 	return constants.StateMainMenu, h.RenderMenu(), nil

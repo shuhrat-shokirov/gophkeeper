@@ -39,6 +39,7 @@ func New(p Params) {
 	if ok := p.AuthHandler.CheckAuth(); ok {
 		module.userAuth = true
 		module.state = constants.StateAuthorizedMainMenu
+		module.screen = p.AuthHandler.RenderMenu()
 	}
 
 	program := tea.NewProgram(module)

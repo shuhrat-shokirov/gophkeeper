@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -17,17 +18,19 @@ func (s *service) CheckAuth(ctx context.Context) error {
 
 	token, err := jwt.Parse(s.accessToken, s.publicKey)
 	if err != nil {
-		log.Printf("validate: parse token: %v", err)
-		return fmt.Errorf("token validate error: %w", err)
-	}
+		if !errors.Is(err, jwt.ErrTokenExpired) {
+			log.Printf("validate: parse token: %v", err)
+			return fmt.Errorf("token validate error: %w", err)
+		}
+	} else {
+		claimExpiration, err := token.GetExpirationTime()
+		if err != nil {
+			return fmt.Errorf("get expiration time error: %w", err)
+		}
 
-	claimExpiration, err := token.GetExpirationTime()
-	if err != nil {
-		return fmt.Errorf("get expiration time error: %w", err)
-	}
-
-	if !claimExpiration.Before(time.Now()) {
-		return nil
+		if time.Now().Add(5 * time.Minute).Before(claimExpiration.Time) {
+			return nil
+		}
 	}
 
 	authToken, err := s.serverGateway.RefreshToken(ctx, s.refreshToken)

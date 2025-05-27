@@ -46,7 +46,7 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 		h.otp = nil
 		h.userAuthed = true
 		if !h.isLogin {
-			return constants.StateOtpVerified, "Регистрация успешна!", nil
+			return constants.StateAuthorizedMainMenu, "Регистрация успешна!", nil
 		}
 
 		return constants.StateAuthorizedMainMenu, "Авторизация успешна!", nil

@@ -8,7 +8,9 @@ option go_package = "proto/";
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
   rpc ConfirmOTP(ConfirmOTPRequest) returns (ConfirmOTPResponse);
+
   rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
 
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 }
@@ -60,8 +62,7 @@ enum RefreshTokenStatus {
   REFRESH_STATUS_UNSPECIFIED = 0;
   REFRESH_SUCCESS = 1;
   INVALID_REFRESH_TOKEN = 2;
-  EXPIRED_REFRESH_TOKEN = 3;
-  REFRESH_ERROR = 4;
+  REFRESH_ERROR = 3;
 }
 
 message RefreshTokenResponse {
@@ -86,4 +87,19 @@ message LoginResponse {
   LoginStatus status = 1;
   string otp_id = 2; // ID для проверки OTP
   string message = 3; // Сообщение об ошибке или успехе
+}
+
+enum LogoutStatus {
+  LOGOUT_STATUS_UNSPECIFIED = 0;
+  LOGOUT_SUCCESS = 1;
+  LOGOUT_ERROR = 2;
+}
+
+message LogoutRequest {
+  string token = 1; // токен пользователя для выхода
+}
+
+message LogoutResponse {
+  LogoutStatus status = 1;
+  string message = 2; // Сообщение об ошибке или успехе
 }

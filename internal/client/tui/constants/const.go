@@ -4,6 +4,7 @@ const (
 	StateMainMenu      = "main_menu"
 	StateLoginEmail    = "login_email"
 	StateLoginPassword = "login_password"
+	StateLogout        = "logout"
 	StateOtpRequested  = "otp_requested"
 	StateOtpVerified   = "otp_verified"
 	StateDataMenu      = "data_menu"
