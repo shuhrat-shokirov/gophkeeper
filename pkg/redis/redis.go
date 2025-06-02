@@ -10,7 +10,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/fx"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 	"gophkeeper/pkg/config"
 	"gophkeeper/pkg/logger"
 )
@@ -68,7 +68,7 @@ func (c *cache) Save(ctx context.Context, key string, value any, dur time.Durati
 	marshal, err := json.Marshal(value)
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
-			return exceptions.ErrNotFound
+			return errorx.ErrNotFound
 		}
 		return fmt.Errorf("marshal json: %w", err)
 	}

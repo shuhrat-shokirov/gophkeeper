@@ -99,6 +99,8 @@ func generateSecureToken(length int) (string, error) {
 	return base64.URLEncoding.EncodeToString(bytes), nil
 }
 
+var ErrTokenExpired = jwt.ErrTokenExpired
+
 func Parse(token string, publicKey []byte) (jwt.Claims, error) {
 	key, err := jwt.ParseRSAPublicKeyFromPEM(publicKey)
 	if err != nil {

@@ -1,4 +1,4 @@
-package exceptions
+package errorx
 
 import "errors"
 
@@ -10,6 +10,6 @@ var (
 	ErrOtpInvalid          = errors.New("invalid OTP code")
 	ErrUserNotFound        = errors.New("user not found")
 	ErrTokenNotFound       = errors.New("token not found")
-	ErrRefreshTokenExpired = errors.New("refresh token has expired")
 	ErrRefreshTokenInvalid = errors.New("invalid refresh token")
+	ErrInvalidCredentials  = errors.New("invalid credentials")
 )

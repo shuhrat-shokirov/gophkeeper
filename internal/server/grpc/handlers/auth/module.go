@@ -34,6 +34,8 @@ type Handler interface {
 
 	RefreshToken(ctx context.Context, request *pb.RefreshTokenRequest) (*pb.RefreshTokenResponse, error)
 
+	Login(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error)
+
 	RegisterService(srv *grpc.Server)
 }
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 )
 
 func (r *repo) GetUserByEmail(ctx context.Context, email string) (*User, error) {
@@ -28,7 +28,7 @@ WHERE email = $1`, email).Scan(
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, exceptions.ErrNotFound
+			return nil, errorx.ErrNotFound
 		}
 
 		return nil, fmt.Errorf("could not get user: %w", err)
@@ -55,7 +55,7 @@ WHERE id = $1`, id).Scan(
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, exceptions.ErrNotFound
+			return nil, errorx.ErrNotFound
 		}
 
 		return nil, fmt.Errorf("could not get user by id: %w", err)

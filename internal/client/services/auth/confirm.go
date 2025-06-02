@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 )
 
 func (s *service) ConfirmOTP(ctx context.Context, code string) error {
 	otpId, ok := s.cache.Get(otpCodeKey)
 	if !ok {
-		return exceptions.ErrOtpExpired
+		return errorx.ErrOtpExpired
 	}
 
 	id, _ := otpId.(string)
@@ -23,10 +23,6 @@ func (s *service) ConfirmOTP(ctx context.Context, code string) error {
 
 	s.accessToken = token.AccessToken
 	s.refreshToken = token.RefreshToken
-	if err := writeEnvFile(s.accessToken, s.refreshToken); err != nil {
-		return fmt.Errorf("failed to write tokens to .env file: %w", err)
-	}
-
 	return nil
 }
 

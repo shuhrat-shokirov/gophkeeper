@@ -23,6 +23,8 @@ type Gateway interface {
 	Register(ctx context.Context, email, password string) (string, error)
 	ConfirmOtp(ctx context.Context, otpId, otpCode string) (*Token, error)
 	RefreshToken(ctx context.Context, refreshToken string) (*Token, error)
+	Login(ctx context.Context, email, password string) (string, error)
+	Logout(ctx context.Context, refreshToken string)
 }
 
 type gateway struct {

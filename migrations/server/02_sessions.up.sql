@@ -1,6 +1,6 @@
 create table sessions
 (
-    id            bigserial primary key,
+    id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id       bigint       not null,
     refresh_token varchar(256) not null unique,
     created_at    timestamptz  not null default now(),

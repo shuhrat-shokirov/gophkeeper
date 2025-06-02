@@ -4,24 +4,22 @@ import (
 	"context"
 	"fmt"
 
-	"gophkeeper/internal/client/exceptions"
+	"google.golang.org/protobuf/proto"
+
+	"gophkeeper/internal/client/errorx"
 	pb "gophkeeper/proto"
 )
 
 func (g *gateway) RefreshToken(ctx context.Context, refreshToken string) (*Token, error) {
 	resp, err := g.client.RefreshToken(ctx, &pb.RefreshTokenRequest{
-		RefreshToken: refreshToken,
+		RefreshToken: proto.String(refreshToken),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to refresh token: %w", err)
 	}
 
-	if resp.GetStatus() == pb.RefreshTokenStatus_EXPIRED_REFRESH_TOKEN {
-		return nil, exceptions.ErrRefreshTokenExpired
-	}
-
 	if resp.GetStatus() == pb.RefreshTokenStatus_INVALID_REFRESH_TOKEN {
-		return nil, exceptions.ErrRefreshTokenInvalid
+		return nil, errorx.ErrRefreshTokenInvalid
 	}
 
 	if resp.GetStatus() != pb.RefreshTokenStatus_REFRESH_SUCCESS {

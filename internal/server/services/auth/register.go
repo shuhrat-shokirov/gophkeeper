@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 	"gophkeeper/internal/server/gateways/emailtotp"
 	"gophkeeper/internal/server/repositories/user"
 	"gophkeeper/pkg/utils"
@@ -17,13 +17,13 @@ import (
 func (s *service) Registration(ctx context.Context, request Registration) (string, error) {
 	getUser, err := s.userRepo.GetUserByEmail(ctx, request.Email)
 	if err != nil {
-		if !errors.Is(err, exceptions.ErrNotFound) {
+		if !errors.Is(err, errorx.ErrNotFound) {
 			return "", fmt.Errorf("error getting user: %w", err)
 		}
 	}
 
 	if getUser != nil {
-		return "", exceptions.ErrAlreadyExists
+		return "", errorx.ErrAlreadyExists
 	}
 
 	password, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
@@ -39,6 +39,15 @@ func (s *service) Registration(ctx context.Context, request Registration) (strin
 		return "", fmt.Errorf("error creating user: %w", err)
 	}
 
+	otpId, err := s.senOtp(ctx, userID, request.Email)
+	if err != nil {
+		return "", fmt.Errorf("error sending OTP: %w", err)
+	}
+
+	return otpId, nil
+}
+
+func (s *service) senOtp(ctx context.Context, userID int, email string) (string, error) {
 	otp, err := utils.GenerateOTP()
 	if err != nil {
 		return "", fmt.Errorf("error generating OTP: %w", err)
@@ -50,7 +59,7 @@ func (s *service) Registration(ctx context.Context, request Registration) (strin
 	}
 
 	err = s.emailTotpGateway.SendEmail(ctx, &emailtotp.Request{
-		To:      request.Email,
+		To:      email,
 		Subject: "Your One-Time Password",
 		Body:    message,
 	})
