@@ -4,21 +4,23 @@ import (
 	"context"
 	"fmt"
 
-	"gophkeeper/internal/client/exceptions"
+	"google.golang.org/protobuf/proto"
+
+	"gophkeeper/internal/client/errorx"
 	pb "gophkeeper/proto"
 )
 
 func (g *gateway) Login(ctx context.Context, email, password string) (string, error) {
 	resp, err := g.client.Login(ctx, &pb.LoginRequest{
-		Email:    email,
-		Password: password,
+		Email:    proto.String(email),
+		Password: proto.String(password),
 	})
 	if err != nil {
 		return "", fmt.Errorf("login: %w", err)
 	}
 
 	if resp.GetStatus() == pb.LoginStatus_INVALID_CREDENTIALS {
-		return "", exceptions.ErrInvalidCredentials
+		return "", errorx.ErrInvalidCredentials
 	}
 
 	if resp.GetStatus() != pb.LoginStatus_LOGIN_SUCCESS {

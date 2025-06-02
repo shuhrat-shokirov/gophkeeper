@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 )
 
 func (s *service) ConfirmOTP(ctx context.Context, code string) error {
 	otpId, ok := s.cache.Get(otpCodeKey)
 	if !ok {
-		return exceptions.ErrOtpExpired
+		return errorx.ErrOtpExpired
 	}
 
 	id, _ := otpId.(string)

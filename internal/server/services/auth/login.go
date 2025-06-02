@@ -6,7 +6,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 )
 
 func (s *service) Login(ctx context.Context, email, password string) (string, error) {
@@ -17,7 +17,7 @@ func (s *service) Login(ctx context.Context, email, password string) (string, er
 
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(password))
 	if err != nil {
-		return "", fmt.Errorf("invalid credentials: %w", exceptions.ErrInvalidCredentials)
+		return "", fmt.Errorf("invalid credentials: %w", errorx.ErrInvalidCredentials)
 	}
 
 	otpId, err := s.senOtp(ctx, userInfo.ID, email)

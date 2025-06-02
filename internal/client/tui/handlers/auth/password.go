@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 	"gophkeeper/internal/client/tui/constants"
 )
 
@@ -25,7 +25,7 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 		if !h.isLogin {
 			err := h.authService.Register(ctx, string(h.email), string(h.password))
 			if err != nil {
-				if errors.Is(err, exceptions.ErrUserAlreadyExists) {
+				if errors.Is(err, errorx.ErrUserAlreadyExists) {
 					// Если пользователь уже существует, то предлагаем ввести пароль для входа
 					h.typing = "password"
 					h.isLogin = true
@@ -44,7 +44,7 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 
 		err := h.authService.Login(ctx, string(h.email), string(h.password))
 		if err != nil {
-			if errors.Is(err, exceptions.ErrInvalidCredentials) {
+			if errors.Is(err, errorx.ErrInvalidCredentials) {
 				return constants.StateLoginPassword, "Неверный email или пароль. Пожалуйста, попробуйте снова:", nil
 			}
 

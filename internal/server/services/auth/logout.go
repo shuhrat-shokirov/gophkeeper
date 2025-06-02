@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 )
 
 func (s *service) Logout(ctx context.Context, accessToken string) error {
 	if accessToken == "" {
-		return fmt.Errorf("empty access token, %w", exceptions.ErrTokenNotFound)
+		return fmt.Errorf("empty access token, %w", errorx.ErrTokenNotFound)
 	}
 
 	err := s.sessionRepo.Delete(ctx, accessToken)

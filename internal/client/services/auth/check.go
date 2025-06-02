@@ -7,13 +7,13 @@ import (
 	"log"
 	"time"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 	"gophkeeper/pkg/jwt"
 )
 
 func (s *service) CheckAuth(ctx context.Context) error {
 	if s.accessToken == "" || s.refreshToken == "" {
-		return exceptions.ErrTokenNotFound
+		return errorx.ErrTokenNotFound
 	}
 
 	token, err := jwt.Parse(s.accessToken, s.publicKey)

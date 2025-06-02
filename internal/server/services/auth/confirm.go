@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 	"gophkeeper/internal/server/repositories/session"
 )
 
@@ -16,21 +16,21 @@ func (s *service) ConfirmOTP(ctx context.Context, id, code string) (*ConfirmResp
 
 	err := s.cache.Find(ctx, cacheKey, &otp)
 	if err != nil {
-		if errors.Is(err, exceptions.ErrNotFound) {
-			return nil, exceptions.ErrOTPExpired
+		if errors.Is(err, errorx.ErrNotFound) {
+			return nil, errorx.ErrOTPExpired
 		}
 
 		return nil, fmt.Errorf("cache find error: %w", err)
 	}
 
 	if otp.Otp != code {
-		return nil, exceptions.ErrInvalidOTP
+		return nil, errorx.ErrInvalidOTP
 	}
 
 	_, err = s.userRepo.GetUserByID(ctx, otp.UserID)
 	if err != nil {
-		if errors.Is(err, exceptions.ErrNotFound) {
-			return nil, exceptions.ErrNotFound
+		if errors.Is(err, errorx.ErrNotFound) {
+			return nil, errorx.ErrNotFound
 		}
 
 		return nil, fmt.Errorf("error getting user by id: %w", err)

@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 	"gophkeeper/pkg/utils"
 )
 
 func (s *service) Login(ctx context.Context, email, password string) error {
 	if !utils.ValidateEmail(email) {
-		return exceptions.ErrEmailInvalidFormat
+		return errorx.ErrEmailInvalidFormat
 	}
 
 	if len(password) < 6 {
-		return exceptions.ErrPasswordTooShort
+		return errorx.ErrPasswordTooShort
 	}
 
 	otpId, err := s.serverGateway.Login(ctx, email, password)

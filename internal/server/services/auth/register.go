@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 	"gophkeeper/internal/server/gateways/emailtotp"
 	"gophkeeper/internal/server/repositories/user"
 	"gophkeeper/pkg/utils"
@@ -17,13 +17,13 @@ import (
 func (s *service) Registration(ctx context.Context, request Registration) (string, error) {
 	getUser, err := s.userRepo.GetUserByEmail(ctx, request.Email)
 	if err != nil {
-		if !errors.Is(err, exceptions.ErrNotFound) {
+		if !errors.Is(err, errorx.ErrNotFound) {
 			return "", fmt.Errorf("error getting user: %w", err)
 		}
 	}
 
 	if getUser != nil {
-		return "", exceptions.ErrAlreadyExists
+		return "", errorx.ErrAlreadyExists
 	}
 
 	password, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)

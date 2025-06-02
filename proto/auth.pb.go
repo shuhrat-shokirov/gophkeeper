@@ -286,8 +286,8 @@ func (LogoutStatus) EnumDescriptor() ([]byte, []int) {
 
 type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Email         *string                `protobuf:"bytes,1,opt,name=email" json:"email,omitempty"`
+	Password      *string                `protobuf:"bytes,2,opt,name=password" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -323,24 +323,24 @@ func (*RegisterRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *RegisterRequest) GetEmail() string {
-	if x != nil {
-		return x.Email
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
 
 func (x *RegisterRequest) GetPassword() string {
-	if x != nil {
-		return x.Password
+	if x != nil && x.Password != nil {
+		return *x.Password
 	}
 	return ""
 }
 
 type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        RegisterStatus         `protobuf:"varint,1,opt,name=status,proto3,enum=auth.RegisterStatus" json:"status,omitempty"`
-	OtpId         string                 `protobuf:"bytes,2,opt,name=otp_id,json=otpId,proto3" json:"otp_id,omitempty"` // ID для проверки OTP
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`          // Сообщение об ошибке или успехе
+	Status        *RegisterStatus        `protobuf:"varint,1,opt,name=status,enum=auth.RegisterStatus" json:"status,omitempty"`
+	OtpId         *string                `protobuf:"bytes,2,opt,name=otp_id,json=otpId" json:"otp_id,omitempty"` // ID для проверки OTP
+	Message       *string                `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`          // Сообщение об ошибке или успехе
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -376,30 +376,30 @@ func (*RegisterResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *RegisterResponse) GetStatus() RegisterStatus {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return RegisterStatus_REGISTER_STATUS_UNSPECIFIED
 }
 
 func (x *RegisterResponse) GetOtpId() string {
-	if x != nil {
-		return x.OtpId
+	if x != nil && x.OtpId != nil {
+		return *x.OtpId
 	}
 	return ""
 }
 
 func (x *RegisterResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
 
 type ConfirmOTPRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	OtpId         string                 `protobuf:"bytes,1,opt,name=otp_id,json=otpId,proto3" json:"otp_id,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	OtpId         *string                `protobuf:"bytes,1,opt,name=otp_id,json=otpId" json:"otp_id,omitempty"`
+	Code          *string                `protobuf:"bytes,2,opt,name=code" json:"code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -435,26 +435,26 @@ func (*ConfirmOTPRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *ConfirmOTPRequest) GetOtpId() string {
-	if x != nil {
-		return x.OtpId
+	if x != nil && x.OtpId != nil {
+		return *x.OtpId
 	}
 	return ""
 }
 
 func (x *ConfirmOTPRequest) GetCode() string {
-	if x != nil {
-		return x.Code
+	if x != nil && x.Code != nil {
+		return *x.Code
 	}
 	return ""
 }
 
 type ConfirmOTPResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        ConfirmOTPStatus       `protobuf:"varint,1,opt,name=status,proto3,enum=auth.ConfirmOTPStatus" json:"status,omitempty"`
-	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                  // возвращаем ID пользователя, если успех
-	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`                                   // JWT или session, чтобы сразу работать дальше
-	RefreshToken  string                 `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"` // для обновления токена
-	Message       string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                               // например: "Регистрация успешно подтверждена"
+	Status        *ConfirmOTPStatus      `protobuf:"varint,1,opt,name=status,enum=auth.ConfirmOTPStatus" json:"status,omitempty"`
+	UserId        *int64                 `protobuf:"varint,2,opt,name=user_id,json=userId" json:"user_id,omitempty"`                  // возвращаем ID пользователя, если успех
+	Token         *string                `protobuf:"bytes,3,opt,name=token" json:"token,omitempty"`                                   // JWT или session, чтобы сразу работать дальше
+	RefreshToken  *string                `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken" json:"refresh_token,omitempty"` // для обновления токена
+	Message       *string                `protobuf:"bytes,5,opt,name=message" json:"message,omitempty"`                               // например: "Регистрация успешно подтверждена"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -490,43 +490,43 @@ func (*ConfirmOTPResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *ConfirmOTPResponse) GetStatus() ConfirmOTPStatus {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return ConfirmOTPStatus_CONFIRM_STATUS_UNSPECIFIED
 }
 
 func (x *ConfirmOTPResponse) GetUserId() int64 {
-	if x != nil {
-		return x.UserId
+	if x != nil && x.UserId != nil {
+		return *x.UserId
 	}
 	return 0
 }
 
 func (x *ConfirmOTPResponse) GetToken() string {
-	if x != nil {
-		return x.Token
+	if x != nil && x.Token != nil {
+		return *x.Token
 	}
 	return ""
 }
 
 func (x *ConfirmOTPResponse) GetRefreshToken() string {
-	if x != nil {
-		return x.RefreshToken
+	if x != nil && x.RefreshToken != nil {
+		return *x.RefreshToken
 	}
 	return ""
 }
 
 func (x *ConfirmOTPResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
 
 type RefreshTokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	RefreshToken  *string                `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken" json:"refresh_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -562,17 +562,17 @@ func (*RefreshTokenRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *RefreshTokenRequest) GetRefreshToken() string {
-	if x != nil {
-		return x.RefreshToken
+	if x != nil && x.RefreshToken != nil {
+		return *x.RefreshToken
 	}
 	return ""
 }
 
 type RefreshTokenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        RefreshTokenStatus     `protobuf:"varint,1,opt,name=status,proto3,enum=auth.RefreshTokenStatus" json:"status,omitempty"`
-	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`     // новый JWT токен
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"` // сообщение об ошибке или успехе
+	Status        *RefreshTokenStatus    `protobuf:"varint,1,opt,name=status,enum=auth.RefreshTokenStatus" json:"status,omitempty"`
+	Token         *string                `protobuf:"bytes,2,opt,name=token" json:"token,omitempty"`     // новый JWT токен
+	Message       *string                `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"` // сообщение об ошибке или успехе
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -608,30 +608,30 @@ func (*RefreshTokenResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *RefreshTokenResponse) GetStatus() RefreshTokenStatus {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return RefreshTokenStatus_REFRESH_STATUS_UNSPECIFIED
 }
 
 func (x *RefreshTokenResponse) GetToken() string {
-	if x != nil {
-		return x.Token
+	if x != nil && x.Token != nil {
+		return *x.Token
 	}
 	return ""
 }
 
 func (x *RefreshTokenResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
 
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Email         *string                `protobuf:"bytes,1,opt,name=email" json:"email,omitempty"`
+	Password      *string                `protobuf:"bytes,2,opt,name=password" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -667,24 +667,24 @@ func (*LoginRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *LoginRequest) GetEmail() string {
-	if x != nil {
-		return x.Email
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
 
 func (x *LoginRequest) GetPassword() string {
-	if x != nil {
-		return x.Password
+	if x != nil && x.Password != nil {
+		return *x.Password
 	}
 	return ""
 }
 
 type LoginResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        LoginStatus            `protobuf:"varint,1,opt,name=status,proto3,enum=auth.LoginStatus" json:"status,omitempty"`
-	OtpId         string                 `protobuf:"bytes,2,opt,name=otp_id,json=otpId,proto3" json:"otp_id,omitempty"` // ID для проверки OTP
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`          // Сообщение об ошибке или успехе
+	Status        *LoginStatus           `protobuf:"varint,1,opt,name=status,enum=auth.LoginStatus" json:"status,omitempty"`
+	OtpId         *string                `protobuf:"bytes,2,opt,name=otp_id,json=otpId" json:"otp_id,omitempty"` // ID для проверки OTP
+	Message       *string                `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`          // Сообщение об ошибке или успехе
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -720,29 +720,29 @@ func (*LoginResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *LoginResponse) GetStatus() LoginStatus {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return LoginStatus_LOGIN_STATUS_UNSPECIFIED
 }
 
 func (x *LoginResponse) GetOtpId() string {
-	if x != nil {
-		return x.OtpId
+	if x != nil && x.OtpId != nil {
+		return *x.OtpId
 	}
 	return ""
 }
 
 func (x *LoginResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
 
 type LogoutRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // токен пользователя для выхода
+	Token         *string                `protobuf:"bytes,1,opt,name=token" json:"token,omitempty"` // токен пользователя для выхода
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -778,16 +778,16 @@ func (*LogoutRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *LogoutRequest) GetToken() string {
-	if x != nil {
-		return x.Token
+	if x != nil && x.Token != nil {
+		return *x.Token
 	}
 	return ""
 }
 
 type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        LogoutStatus           `protobuf:"varint,1,opt,name=status,proto3,enum=auth.LogoutStatus" json:"status,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"` // Сообщение об ошибке или успехе
+	Status        *LogoutStatus          `protobuf:"varint,1,opt,name=status,enum=auth.LogoutStatus" json:"status,omitempty"`
+	Message       *string                `protobuf:"bytes,2,opt,name=message" json:"message,omitempty"` // Сообщение об ошибке или успехе
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -823,15 +823,15 @@ func (*LogoutResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *LogoutResponse) GetStatus() LogoutStatus {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return LogoutStatus_LOGOUT_STATUS_UNSPECIFIED
 }
 
 func (x *LogoutResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
@@ -907,7 +907,7 @@ const file_proto_auth_proto_rawDesc = "" +
 	"ConfirmOTP\x12\x17.auth.ConfirmOTPRequest\x1a\x18.auth.ConfirmOTPResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x123\n" +
 	"\x06Logout\x12\x13.auth.LogoutRequest\x1a\x14.auth.LogoutResponse\x12E\n" +
-	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponseB\bZ\x06proto/b\x06proto3"
+	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponseB\bZ\x06proto/b\beditionsp\xe8\a"
 
 var (
 	file_proto_auth_proto_rawDescOnce sync.Once

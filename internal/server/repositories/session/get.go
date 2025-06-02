@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"gophkeeper/internal/server/exceptions"
+	"gophkeeper/internal/server/errorx"
 )
 
 func (r *repo) Get(ctx context.Context, refreshToken string) (*Session, error) {
@@ -25,7 +25,7 @@ WHERE refresh_token = $1 and expired_at > NOW()`,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, exceptions.ErrNotFound
+			return nil, errorx.ErrNotFound
 		}
 		return nil, fmt.Errorf("get session: %w", err)
 	}

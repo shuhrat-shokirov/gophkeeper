@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"gophkeeper/internal/client/exceptions"
+	"google.golang.org/protobuf/proto"
+
+	"gophkeeper/internal/client/errorx"
 	pb "gophkeeper/proto"
 )
 
@@ -15,23 +17,23 @@ type Token struct {
 
 func (g *gateway) ConfirmOtp(ctx context.Context, otpId, otpCode string) (*Token, error) {
 	resp, err := g.client.ConfirmOTP(ctx, &pb.ConfirmOTPRequest{
-		OtpId: otpId,
-		Code:  otpCode,
+		OtpId: proto.String(otpId),
+		Code:  proto.String(otpCode),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to confirm OTP: %w", err)
 	}
 
 	if resp.GetStatus() == pb.ConfirmOTPStatus_INVALID_CODE {
-		return nil, exceptions.ErrOtpInvalid
+		return nil, errorx.ErrOtpInvalid
 	}
 
 	if resp.GetStatus() == pb.ConfirmOTPStatus_CODE_EXPIRED {
-		return nil, exceptions.ErrOtpExpired
+		return nil, errorx.ErrOtpExpired
 	}
 
 	if resp.GetStatus() == pb.ConfirmOTPStatus_USER_NOT_FOUND_CODE {
-		return nil, exceptions.ErrUserNotFound
+		return nil, errorx.ErrUserNotFound
 	}
 
 	if resp.GetStatus() != pb.ConfirmOTPStatus_CONFIRM_SUCCESS {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"gophkeeper/internal/client/exceptions"
+	"gophkeeper/internal/client/errorx"
 	"gophkeeper/internal/client/tui/constants"
 )
 
@@ -24,15 +24,15 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 		err := h.authService.ConfirmOTP(ctx, string(h.otp))
 		if err != nil {
 			switch {
-			case errors.Is(err, exceptions.ErrOtpExpired):
+			case errors.Is(err, errorx.ErrOtpExpired):
 				h.otp = nil
 				h.isLogin = true
 				h.typing = "password"
 				return constants.StateLoginPassword, "OTP истек. Пожалуйста, запросите новый код.", nil
-			case errors.Is(err, exceptions.ErrOtpInvalid):
+			case errors.Is(err, errorx.ErrOtpInvalid):
 				h.otp = nil
 				return constants.StateOtpRequested, "Неверный OTP. Пожалуйста, введите правильный код.", nil
-			case errors.Is(err, exceptions.ErrUserNotFound):
+			case errors.Is(err, errorx.ErrUserNotFound):
 				h.otp = nil
 				h.isLogin = false
 				h.typing = "password"
