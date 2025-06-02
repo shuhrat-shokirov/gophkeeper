@@ -1,0 +1,105 @@
+edition = "2023";
+
+package auth;
+
+option go_package = "proto/";
+
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc ConfirmOTP(ConfirmOTPRequest) returns (ConfirmOTPResponse);
+
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+enum RegisterStatus {
+  REGISTER_STATUS_UNSPECIFIED = 0;
+  USER_ALREADY_EXISTS = 1;
+  OTP_SENT = 2;
+  REGISTER_ERROR = 3;
+}
+
+message RegisterResponse {
+  RegisterStatus status = 1;
+  string otp_id = 2; // ID для проверки OTP
+  string message = 3; // Сообщение об ошибке или успехе
+}
+message ConfirmOTPRequest {
+  string otp_id = 1;
+  string code = 2;
+}
+
+enum ConfirmOTPStatus {
+  CONFIRM_STATUS_UNSPECIFIED = 0;
+  CONFIRM_SUCCESS = 1;
+  INVALID_CODE = 2;
+  CODE_EXPIRED = 3;
+  USER_NOT_FOUND_CODE = 4;
+  CONFIRM_ERROR = 5;
+}
+
+message ConfirmOTPResponse {
+  ConfirmOTPStatus status = 1;
+  int64 user_id = 2;        // возвращаем ID пользователя, если успех
+  string token = 3;         // JWT или session, чтобы сразу работать дальше
+  string refresh_token = 4; // для обновления токена
+  string message = 5;       // например: "Регистрация успешно подтверждена"
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+enum RefreshTokenStatus {
+  REFRESH_STATUS_UNSPECIFIED = 0;
+  REFRESH_SUCCESS = 1;
+  INVALID_REFRESH_TOKEN = 2;
+  REFRESH_ERROR = 3;
+}
+
+message RefreshTokenResponse {
+  RefreshTokenStatus status = 1;
+  string token = 2;               // новый JWT токен
+  string message = 3;             // сообщение об ошибке или успехе
+}
+
+enum LoginStatus {
+  LOGIN_STATUS_UNSPECIFIED = 0;
+  LOGIN_SUCCESS = 1;
+  INVALID_CREDENTIALS = 2;
+  LOGIN_ERROR = 4;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  LoginStatus status = 1;
+  string otp_id = 2; // ID для проверки OTP
+  string message = 3; // Сообщение об ошибке или успехе
+}
+
+enum LogoutStatus {
+  LOGOUT_STATUS_UNSPECIFIED = 0;
+  LOGOUT_SUCCESS = 1;
+  LOGOUT_ERROR = 2;
+}
+
+message LogoutRequest {
+  string token = 1; // токен пользователя для выхода
+}
+
+message LogoutResponse {
+  LogoutStatus status = 1;
+  string message = 2; // Сообщение об ошибке или успехе
+}
