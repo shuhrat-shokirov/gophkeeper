@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: gophkeeper-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: goph_keeper_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: gophkeeper-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ""
+    volumes:
+      - redis_data:/data
+
+volumes:
+  pg_data:
+  redis_data:

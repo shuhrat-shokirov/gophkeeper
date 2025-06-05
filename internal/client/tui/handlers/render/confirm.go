@@ -45,10 +45,10 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 		h.userAuthed = true
 		h.position = 0
 		if !h.isLogin {
-			return constants.StateAuthorizedMainMenu, "Регистрация успешна!", nil
+			return constants.StateAuthorizedMainMenu, h.RenderMenu(), nil
 		}
 
-		return constants.StateAuthorizedMainMenu, "Авторизация успешна!", nil
+		return constants.StateAuthorizedMainMenu, h.RenderMenu(), nil
 	case input == constants.CmdBack && len(h.otp) > 0:
 		h.otp = h.otp[:len(h.otp)-1]
 	case input != "" && input != constants.CmdBack && !ignoreInput[input]:
