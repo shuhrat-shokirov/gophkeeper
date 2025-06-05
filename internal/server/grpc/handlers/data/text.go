@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/protobuf/proto"
 
@@ -9,8 +10,8 @@ import (
 	pb "gophkeeper/proto"
 )
 
-func (h *handler) SaveText(context context.Context, request *pb.TextData) (*pb.Response, error) {
-	err := h.dataService.SaveText(context, &data.TextData{
+func (h *handler) SaveText(ctx context.Context, request *pb.TextData) (*pb.Response, error) {
+	err := h.dataService.SaveText(ctx, &data.TextData{
 		UserID:    request.Meta.GetUserId(),
 		Title:     request.Meta.GetTitle(),
 		Content:   request.GetContent(),
@@ -21,7 +22,7 @@ func (h *handler) SaveText(context context.Context, request *pb.TextData) (*pb.R
 		return &pb.Response{
 			Status:  pb.ResponseStatus_ERROR.Enum(),
 			Message: proto.String("Failed to save text data: " + err.Error()),
-		}, err
+		}, fmt.Errorf("failed to save text data: %w", err)
 	}
 
 	return &pb.Response{

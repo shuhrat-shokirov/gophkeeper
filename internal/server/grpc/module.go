@@ -34,6 +34,7 @@ type Params struct {
 	DataHandler data.Handler
 }
 
+//nolint:gocritic
 func New(p Params) error {
 	server := grpc.NewServer()
 
