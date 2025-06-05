@@ -11,7 +11,7 @@ import (
 )
 
 func (g *gateway) Login(ctx context.Context, email, password string) (string, error) {
-	resp, err := g.client.Login(ctx, &pb.LoginRequest{
+	resp, err := g.authServiceClient.Login(ctx, &pb.LoginRequest{
 		Email:    proto.String(email),
 		Password: proto.String(password),
 	})

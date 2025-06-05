@@ -24,5 +24,8 @@
   },
   "jwt": {
     "private_key": ""
+  },
+  "aes": {
+    "secret_key": ""
   }
 }

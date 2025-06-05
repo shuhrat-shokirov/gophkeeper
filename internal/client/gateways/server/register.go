@@ -11,7 +11,7 @@ import (
 )
 
 func (g *gateway) Register(ctx context.Context, email, password string) (string, error) {
-	resp, err := g.client.Register(ctx, &pb.RegisterRequest{
+	resp, err := g.authServiceClient.Register(ctx, &pb.RegisterRequest{
 		Email:    proto.String(email),
 		Password: proto.String(password),
 	})

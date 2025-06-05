@@ -3,9 +3,9 @@ package handlers
 import (
 	"go.uber.org/fx"
 
-	"gophkeeper/internal/client/tui/handlers/auth"
+	"gophkeeper/internal/client/tui/handlers/render"
 )
 
 var Module = fx.Options(
-	auth.Module,
+	render.Module,
 )

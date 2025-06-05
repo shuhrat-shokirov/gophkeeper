@@ -125,3 +125,17 @@ func Parse(token string, publicKey []byte) (jwt.Claims, error) {
 
 	return claims, nil
 }
+
+func GetUserIDFromClaims(claims jwt.Claims) (int, error) {
+	mapClaims, ok := claims.(jwt.MapClaims)
+	if !ok {
+		return 0, fmt.Errorf("invalid claims type")
+	}
+
+	userID, ok := mapClaims["user_id"].(float64)
+	if !ok {
+		return 0, fmt.Errorf("user_id not found in claims")
+	}
+
+	return int(userID), nil
+}

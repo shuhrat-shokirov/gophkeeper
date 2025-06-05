@@ -1,4 +1,4 @@
-package auth
+package render
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"go.uber.org/fx"
 
 	"gophkeeper/internal/client/services/auth"
+	"gophkeeper/internal/client/services/data"
 	"gophkeeper/internal/client/tui/constants"
 )
 
@@ -16,6 +17,7 @@ type Params struct {
 	fx.In
 
 	AuthService auth.Service
+	DataService data.Service
 }
 
 type Handler interface {
@@ -25,20 +27,37 @@ type Handler interface {
 }
 
 type handler struct {
-	email      []rune
-	password   []rune
-	otp        []rune
-	position   int    // для навигации вверх/вниз
-	typing     string // "email", "password", "otp"
+	email    []rune
+	password []rune
+	otp      []rune
+
+	addTitle    []rune
+	addLogin    []rune
+	addPassword []rune
+	addNote     []rune
+	addTextData []rune
+	addCardPan  []rune
+	addCardCvv  []rune
+	addCardExp  []rune
+	addFilePath []rune
+
+	isAddLogin bool
+	isAddText  bool
+	isAddFile  bool
+	isAddCard  bool
+
+	position   int // для навигации вверх/вниз
 	isLogin    bool
 	userAuthed bool // флаг, что пользователь авторизован
 
 	authService auth.Service
+	dataService data.Service
 }
 
 func New(p Params) Handler {
 	return &handler{
 		authService: p.AuthService,
+		dataService: p.DataService,
 	}
 }
 
@@ -68,6 +87,32 @@ func (h *handler) HandleInput(state, input string) (nextState, screen string, er
 		return h.stateLogout(input)
 	case constants.StateQuit:
 		return h.stateQuit(input)
+
+	case constants.StateAddData:
+		return h.stateAddData(input)
+	case constants.StateAddTitleData:
+		return h.stateAddTitleData(input)
+	case constants.StateAddLoginData:
+		return h.stateAddLoginData(input)
+	case constants.StateAddPasswordData:
+		return h.stateAddPasswordData(input)
+	case constants.StateAddNoteData:
+		return h.stateAddNoteData(input)
+	case constants.StateSuccessAddData:
+		return h.stateSuccessAddData(input)
+
+	case constants.StateAddTextData:
+		return h.stateAddTextData(input)
+
+	case constants.StateAddCardPan:
+		return h.stateAddCardPanData(input)
+	case constants.StateAddCardCvv:
+		return h.stateAddCardCvvData(input)
+	case constants.StateAddCardExpiry:
+		return h.stateAddCardExpiryData(input)
+
+	case constants.StateAddFileData:
+		return h.stateAddFileData(input)
 	}
 
 	return constants.StateMainMenu, h.RenderMenu(), nil

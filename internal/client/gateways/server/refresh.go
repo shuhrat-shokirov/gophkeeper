@@ -11,7 +11,7 @@ import (
 )
 
 func (g *gateway) RefreshToken(ctx context.Context, refreshToken string) (*Token, error) {
-	resp, err := g.client.RefreshToken(ctx, &pb.RefreshTokenRequest{
+	resp, err := g.authServiceClient.RefreshToken(ctx, &pb.RefreshTokenRequest{
 		RefreshToken: proto.String(refreshToken),
 	})
 	if err != nil {

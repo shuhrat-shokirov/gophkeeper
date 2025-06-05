@@ -13,6 +13,7 @@ import (
 
 	"gophkeeper/internal/server/grpc/handlers"
 	"gophkeeper/internal/server/grpc/handlers/auth"
+	"gophkeeper/internal/server/grpc/handlers/data"
 	"gophkeeper/pkg/config"
 	"gophkeeper/pkg/logger"
 )
@@ -26,15 +27,19 @@ type Params struct {
 	fx.In
 	fx.Lifecycle
 
+	Config config.Config
+	Logger logger.Logger
+
 	AuthHandler auth.Handler
-	Config      config.Config
-	Logger      logger.Logger
+	DataHandler data.Handler
 }
 
 func New(p Params) error {
 	server := grpc.NewServer()
 
 	p.AuthHandler.RegisterService(server)
+	p.DataHandler.RegisterService(server)
+
 	reflection.Register(server)
 
 	listen, err := net.Listen("tcp", p.Config.GetString("grpc.address"))

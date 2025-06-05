@@ -1,4 +1,4 @@
-package auth
+package render
 
 import (
 	"context"
@@ -16,7 +16,6 @@ func (h *handler) stateLogout(input string) (nextState, message string, err erro
 
 		h.authService.Logout(ctx)
 
-		h.typing = ""
 		h.userAuthed = false
 		h.position = 0
 		return constants.StateMainMenu, "Вы успешно вышли из аккаунта.", nil

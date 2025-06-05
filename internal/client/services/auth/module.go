@@ -22,6 +22,8 @@ type Service interface {
 	ConfirmOTP(ctx context.Context, code string) error
 	CheckAuth(ctx context.Context) error
 
+	GetUserID(_ context.Context) (int64, error)
+
 	Login(ctx context.Context, email, password string) error
 	Logout(ctx context.Context)
 }
@@ -40,6 +42,7 @@ type service struct {
 
 	accessToken  string
 	refreshToken string
+	userID       int
 	publicKey    []byte
 }
 

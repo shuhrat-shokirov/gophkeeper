@@ -6,12 +6,25 @@ const (
 	StateLoginPassword = "login_password"
 	StateLogout        = "logout"
 	StateOtpRequested  = "otp_requested"
-	StateOtpVerified   = "otp_verified"
-	StateDataMenu      = "data_menu"
-	StateSwitchToAuth  = "switch_to_auth"
-	StateSwitchToData  = "switch_to_data"
-	StateRefreshNeeded = "refresh_needed"
 	StateQuit          = "quit"
+
+	StateAddData     = "add_data"
+	StateGetDataList = "get_data_list"
+
+	StateAddTitleData = "add_title_data"
+	StateAddNoteData  = "add_note_data"
+
+	StateAddLoginData    = "add_login_data"
+	StateAddPasswordData = "add_password_data"
+	StateSuccessAddData  = "success_add_data"
+
+	StateAddTextData = "add_text_data"
+
+	StateAddCardPan    = "add_card_pan"
+	StateAddCardCvv    = "add_card_cvv"
+	StateAddCardExpiry = "add_card_expiry"
+
+	StateAddFileData = "add_file_data"
 
 	StateAuthorizedMainMenu = "authorized_main_menu"
 )

@@ -16,7 +16,7 @@ type Token struct {
 }
 
 func (g *gateway) ConfirmOtp(ctx context.Context, otpId, otpCode string) (*Token, error) {
-	resp, err := g.client.ConfirmOTP(ctx, &pb.ConfirmOTPRequest{
+	resp, err := g.authServiceClient.ConfirmOTP(ctx, &pb.ConfirmOTPRequest{
 		OtpId: proto.String(otpId),
 		Code:  proto.String(otpCode),
 	})

@@ -25,10 +25,16 @@ type Gateway interface {
 	RefreshToken(ctx context.Context, refreshToken string) (*Token, error)
 	Login(ctx context.Context, email, password string) (string, error)
 	Logout(ctx context.Context, refreshToken string)
+
+	SaveLoginAndPass(ctx context.Context, userID int64, pass *LoginAndPass) error
+	SaveText(ctx context.Context, userID int64, data *Text) error
+	SaveCard(ctx context.Context, userID int64, data *Card) error
+	SaveBinary(ctx context.Context, userID int64, data *Binary) error
 }
 
 type gateway struct {
-	client pb.AuthServiceClient
+	authServiceClient pb.AuthServiceClient
+	dataServiceClient pb.DataServiceClient
 }
 
 func New(p Params) (Gateway, error) {
@@ -40,12 +46,13 @@ func New(p Params) (Gateway, error) {
 	conn, err := grpc.NewClient(url,
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+		return nil, fmt.Errorf("failed to create grpc authServiceClient: %w", err)
 	}
 
 	log.Printf("connecting to %s", url)
 
 	return &gateway{
-		client: pb.NewAuthServiceClient(conn),
+		authServiceClient: pb.NewAuthServiceClient(conn),
+		dataServiceClient: pb.NewDataServiceClient(conn),
 	}, nil
 }
