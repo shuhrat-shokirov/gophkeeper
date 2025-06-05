@@ -143,8 +143,8 @@ func (h *handler) stateAddNoteData(input string) (nextState, message string, err
 			})
 			if err != nil {
 				return constants.StateAddNoteData,
-					"Ошибка при добавлении данных: " + err.Error(),
-					fmt.Errorf("login save error: %w", err)
+				"Ошибка при добавлении данных: " + err.Error(),
+				fmt.Errorf("login save error: %w", err)
 			}
 		case h.isAddText:
 			err := h.dataService.SaveText(ctx, &data.TextData{
@@ -154,8 +154,8 @@ func (h *handler) stateAddNoteData(input string) (nextState, message string, err
 			})
 			if err != nil {
 				return constants.StateAddNoteData,
-					"Ошибка при добавлении данных: " + err.Error(),
-					fmt.Errorf("text save error: %w", err)
+				"Ошибка при добавлении данных: " + err.Error(),
+				fmt.Errorf("text save error: %w", err)
 			}
 		case h.isAddCard:
 			err := h.dataService.SaveCard(ctx, &data.CardData{
@@ -167,8 +167,8 @@ func (h *handler) stateAddNoteData(input string) (nextState, message string, err
 			})
 			if err != nil {
 				return constants.StateAddNoteData,
-					"Ошибка при добавлении данных: " + err.Error(),
-					fmt.Errorf("card save error: %w", err)
+				"Ошибка при добавлении данных: " + err.Error(),
+				fmt.Errorf("card save error: %w", err)
 			}
 		case h.isAddFile:
 			err := h.dataService.SaveFile(ctx, &data.FileData{
@@ -178,8 +178,8 @@ func (h *handler) stateAddNoteData(input string) (nextState, message string, err
 			})
 			if err != nil {
 				return constants.StateAddNoteData,
-					"Ошибка при добавлении данных: " + err.Error(),
-					fmt.Errorf("file save error: %w", err)
+				"Ошибка при добавлении данных: " + err.Error(),
+				fmt.Errorf("file save error: %w", err)
 			}
 		}
 
@@ -286,22 +286,22 @@ func (h *handler) stateAddCardExpiryData(input string) (nextState, message strin
 	case input == constants.CmdEnter:
 		if len(h.addCardExp) == 0 {
 			return constants.StateAddCardExpiry,
-				"Срок действия карты не может быть пустым. Пожалуйста, введите срок действия:",
-				nil
+			"Срок действия карты не может быть пустым. Пожалуйста, введите срок действия:",
+			nil
 		}
 
 		if !unicode.IsDigit(h.addCardExp[len(h.addCardExp)-1]) && h.addCardExp[len(h.addCardExp)-1] != '/' {
 			h.addCardExp = nil
 			return constants.StateAddCardExpiry,
-				"Срок действия карты должен состоять только из цифр и символа '/'. " +
-					"Пожалуйста, введите корректный срок:",
-				nil
+			"Срок действия карты должен состоять только из цифр и символа '/'. " +
+				"Пожалуйста, введите корректный срок:",
+			nil
 		}
 
 		if len(h.addCardExp) != 5 || h.addCardExp[2] != '/' {
 			return constants.StateAddCardExpiry,
-				"Срок действия карты должен быть в формате MM/YY. Пожалуйста, введите корректный срок:",
-				nil
+			"Срок действия карты должен быть в формате MM/YY. Пожалуйста, введите корректный срок:",
+			nil
 		}
 
 		return constants.StateAddNoteData, "Введите метаданные (необязательно): ", nil
@@ -325,8 +325,8 @@ func (h *handler) stateAddFileData(input string) (nextState, message string, err
 		_, err := os.ReadFile(string(h.addFilePath))
 		if err != nil {
 			return constants.StateAddFileData,
-				"Ошибка чтения файла: " + err.Error(),
-				fmt.Errorf("file read error: %w", err)
+			"Ошибка чтения файла: " + err.Error(),
+			fmt.Errorf("file read error: %w", err)
 		}
 
 		return constants.StateAddNoteData, "Введите метаданные (необязательно): ", nil
