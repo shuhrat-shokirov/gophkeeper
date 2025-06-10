@@ -2,7 +2,7 @@ package migration
 
 import (
 	"errors"
-	"os"
+	"fmt"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -27,17 +27,18 @@ type Params struct {
 	Config config.Config
 }
 
-func New(p Params) {
+func New(p Params) error {
 	m, err := migrate.New(p.Config.GetString("migration.file"), p.Config.GetString("migration.dsn"))
 	if err != nil {
 		p.Logger.Error("err from migration.New", zap.Error(err))
-		os.Exit(1)
+		return fmt.Errorf("err from migration.New: %w", err)
 	}
 
 	if err := m.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
 		p.Logger.Error("err from up migration", zap.Error(err))
-		os.Exit(1)
+		return fmt.Errorf("err from up migration: %w", err)
 	}
 
 	p.Logger.Info("migration completed successfully")
+	return nil
 }
