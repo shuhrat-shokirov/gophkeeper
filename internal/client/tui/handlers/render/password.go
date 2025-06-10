@@ -1,4 +1,4 @@
-package auth
+package render
 
 import (
 	"context"
@@ -27,7 +27,6 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 			if err != nil {
 				if errors.Is(err, errorx.ErrUserAlreadyExists) {
 					// Если пользователь уже существует, то предлагаем ввести пароль для входа
-					h.typing = "password"
 					h.isLogin = true
 					h.password = nil // очищаем пароль для нового ввода
 					return constants.StateLoginPassword, "Пользователь с таким email уже существует. Введите пароль:", nil
@@ -37,7 +36,6 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 					fmt.Errorf("failed to register: %w", err)
 			}
 
-			h.typing = "otp"
 			h.password = nil
 			return constants.StateOtpRequested, "OTP отправлен на почту. Введите код:", nil
 		}
@@ -52,7 +50,6 @@ func (h *handler) stateLoginPassword(input string) (nextState, message string, e
 				fmt.Errorf("failed to login: %w", err)
 		}
 
-		h.typing = "otp"
 		h.isLogin = true
 		h.password = nil
 		return constants.StateOtpRequested, "OTP отправлен на почту. Введите код:", nil

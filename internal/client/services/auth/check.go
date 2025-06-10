@@ -41,3 +41,25 @@ func (s *service) CheckAuth(ctx context.Context) error {
 	s.accessToken = authToken.AccessToken
 	return nil
 }
+
+func (s *service) GetUserID(_ context.Context) (int64, error) {
+	if s.userID != 0 {
+		return int64(s.userID), nil
+	}
+
+	parse, err := jwt.Parse(s.accessToken, s.publicKey)
+	if err != nil {
+		if !errors.Is(err, jwt.ErrTokenExpired) {
+			log.Printf("parse token: %v", err)
+			return 0, fmt.Errorf("parse token: %w", err)
+		}
+	}
+
+	userID, err := jwt.GetUserIDFromClaims(parse)
+	if err != nil {
+		return 0, fmt.Errorf("get user id from claims: %w", err)
+	}
+
+	s.userID = userID
+	return int64(userID), nil
+}

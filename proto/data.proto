@@ -1,0 +1,61 @@
+edition = "2023";
+
+package data;
+
+option go_package = "proto/";
+
+service DataService {
+  rpc SaveLogin(LoginData) returns (Response);
+  rpc SaveText(TextData) returns (Response);
+  rpc SaveBinary(BinaryData) returns (Response);
+  rpc SaveCard(CardData) returns (Response);
+}
+
+message BaseData {
+  int64 user_id = 2;
+  string title = 3; // Название объекта (например: "Visa Card", "Google Account")
+  string note = 4;  // Краткое описание или комментарий
+  int64 created_at = 5; // Время создания в формате Unix timestamp
+}
+
+message LoginData {
+  BaseData meta = 1;
+  string login = 2;
+  string password = 3;
+}
+
+message TextData {
+  BaseData meta = 1;
+  string content = 2;
+}
+
+message BinaryData {
+  BaseData meta = 1;
+  bytes data = 2; // Двоичные данные, например, файл
+}
+
+message CardData {
+  BaseData meta = 1;
+  string pan = 2; // Номер карты
+  string expiry = 3; // Срок действия карты в формате MM/YY
+  string cvv = 4;
+}
+
+message IDRequest {
+  string id = 1;
+}
+
+message ListRequest {
+  string user_id = 1;
+}
+
+enum ResponseStatus {
+  STATUS_UNSPECIFIED = 0;
+  SUCCESS = 1;
+  ERROR = 3;
+}
+
+message Response {
+  ResponseStatus status = 1; // Статус ответа
+  string message = 2; // Сообщение об ошибке или успехе
+}

@@ -1,4 +1,4 @@
-package auth
+package render
 
 import (
 	"context"
@@ -27,7 +27,6 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 			case errors.Is(err, errorx.ErrOtpExpired):
 				h.otp = nil
 				h.isLogin = true
-				h.typing = "password"
 				return constants.StateLoginPassword, "OTP истек. Пожалуйста, запросите новый код.", nil
 			case errors.Is(err, errorx.ErrOtpInvalid):
 				h.otp = nil
@@ -35,7 +34,6 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 			case errors.Is(err, errorx.ErrUserNotFound):
 				h.otp = nil
 				h.isLogin = false
-				h.typing = "password"
 				return constants.StateLoginPassword, "Пользователь не найден. Пожалуйста, зарегистрируйтесь.", nil
 			default:
 				return constants.StateOtpRequested, "Ошибка подтверждения OTP: " + err.Error(),
@@ -45,11 +43,12 @@ func (h *handler) stateOtpRequested(input string) (nextState, message string, er
 
 		h.otp = nil
 		h.userAuthed = true
+		h.position = 0
 		if !h.isLogin {
-			return constants.StateAuthorizedMainMenu, "Регистрация успешна!", nil
+			return constants.StateAuthorizedMainMenu, h.RenderMenu(), nil
 		}
 
-		return constants.StateAuthorizedMainMenu, "Авторизация успешна!", nil
+		return constants.StateAuthorizedMainMenu, h.RenderMenu(), nil
 	case input == constants.CmdBack && len(h.otp) > 0:
 		h.otp = h.otp[:len(h.otp)-1]
 	case input != "" && input != constants.CmdBack && !ignoreInput[input]:

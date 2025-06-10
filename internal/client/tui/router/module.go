@@ -9,7 +9,7 @@ import (
 	"go.uber.org/fx"
 
 	"gophkeeper/internal/client/tui/constants"
-	"gophkeeper/internal/client/tui/handlers/auth"
+	"gophkeeper/internal/client/tui/handlers/render"
 )
 
 var Module = fx.Invoke(New)
@@ -17,7 +17,7 @@ var Module = fx.Invoke(New)
 type Params struct {
 	fx.In
 
-	AuthHandler auth.Handler
+	RenderHandler render.Handler
 }
 
 type router struct {
@@ -32,14 +32,14 @@ type router struct {
 func New(p Params) {
 	module := &router{
 		state:   constants.StateMainMenu,
-		handler: p.AuthHandler.HandleInput,
-		screen:  p.AuthHandler.RenderMenu(),
+		handler: p.RenderHandler.HandleInput,
+		screen:  p.RenderHandler.RenderMenu(),
 	}
 
-	if ok := p.AuthHandler.CheckAuth(); ok {
+	if ok := p.RenderHandler.CheckAuth(); ok {
 		module.userAuth = true
 		module.state = constants.StateAuthorizedMainMenu
-		module.screen = p.AuthHandler.RenderMenu()
+		module.screen = p.RenderHandler.RenderMenu()
 	}
 
 	program := tea.NewProgram(module)

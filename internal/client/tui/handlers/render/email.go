@@ -1,4 +1,4 @@
-package auth
+package render
 
 import (
 	"gophkeeper/internal/client/tui/constants"
@@ -12,7 +12,6 @@ func (h *handler) stateLoginEmail(input string) (nextState, message string, err 
 			return constants.StateLoginEmail,
 				"Email не соответствует формату. Пожалуйста, введите правильный email:", nil
 		}
-		h.typing = "password"
 		return constants.StateLoginPassword, "Введите пароль:", nil
 	case input == constants.CmdBack && len(h.email) > 0:
 		h.email = h.email[:len(h.email)-1]

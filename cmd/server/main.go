@@ -7,6 +7,7 @@ import (
 	"gophkeeper/internal/server/grpc"
 	"gophkeeper/internal/server/repositories"
 	"gophkeeper/internal/server/services"
+	"gophkeeper/pkg/aes"
 	"gophkeeper/pkg/config"
 	"gophkeeper/pkg/db"
 	"gophkeeper/pkg/jwt"
@@ -29,5 +30,6 @@ func main() {
 		db.Module,
 		redis.Module,
 		jwt.Module,
+		aes.Module,
 	).Run()
 }

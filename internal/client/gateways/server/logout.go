@@ -9,7 +9,7 @@ import (
 )
 
 func (g *gateway) Logout(ctx context.Context, refreshToken string) {
-	_, _ = g.client.Logout(ctx, &pb.LogoutRequest{
+	_, _ = g.authServiceClient.Logout(ctx, &pb.LogoutRequest{
 		Token: proto.String(refreshToken),
 	})
 }
