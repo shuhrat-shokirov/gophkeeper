@@ -18,6 +18,9 @@ type Params struct {
 
 type Repo interface {
 	Save(ctx context.Context, login *LoginData) (int, error)
+
+	List(ctx context.Context, userID int64, pg Pagination) ([]List, error)
+	GetByID(ctx context.Context, id int64) (*Info, error)
 }
 
 type repo struct {

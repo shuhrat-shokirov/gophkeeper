@@ -9,6 +9,19 @@ service DataService {
   rpc SaveText(TextData) returns (Response);
   rpc SaveBinary(BinaryData) returns (Response);
   rpc SaveCard(CardData) returns (Response);
+
+  rpc GetLoginList(ListRequest) returns (ListResponse);
+  rpc GetLoginByID(IDRequest) returns (LoginDataResponse);
+
+  rpc GetTextList(ListRequest) returns (ListResponse);
+  rpc GetTextByID(IDRequest) returns (TextDataResponse);
+
+
+  rpc GetBinaryList(ListRequest) returns (ListResponse);
+  rpc GetBinaryByID(IDRequest) returns (BinaryDataResponse);
+
+  rpc GetCardList(ListRequest) returns (ListResponse);
+  rpc GetCardByID(IDRequest) returns (CardDataResponse);
 }
 
 message BaseData {
@@ -41,21 +54,77 @@ message CardData {
   string cvv = 4;
 }
 
-message IDRequest {
-  string id = 1;
-}
-
 message ListRequest {
-  string user_id = 1;
+  int64 user_id = 1;
+  int64 limit = 2; // Ограничение на количество возвращаемых элементов
+  int64 offset = 3; // Смещение для пагинации
 }
 
 enum ResponseStatus {
   STATUS_UNSPECIFIED = 0;
   SUCCESS = 1;
-  ERROR = 3;
+  ERROR = 2;
 }
 
 message Response {
   ResponseStatus status = 1; // Статус ответа
   string message = 2; // Сообщение об ошибке или успехе
 }
+
+message ListResp{
+  int64 id = 1; // Уникальный идентификатор объекта
+  string title = 2;
+  int64 created_at = 3;
+  int64 updated_at = 4;
+}
+
+enum ResponseListStatus {
+  LIST_STATUS_UNSPECIFIED = 0;
+  LIST_SUCCESS = 1;
+  LIST_NOT_FOUND = 2;
+  LIST_ERROR = 3;
+}
+
+message ListResponse {
+  ResponseListStatus status = 1; // Статус ответа
+  repeated ListResp items = 2; // Список объектов
+  string message = 3; // Сообщение об ошибке или успехе
+}
+
+message IDRequest {
+  int64 id = 1; // Уникальный идентификатор объекта
+  int64 user_id = 2; // Идентификатор пользователя для проверки доступа
+}
+
+message LoginDataResponse {
+  int64 id = 1; // Уникальный идентификатор логина
+  LoginData data = 2; // Данные логина
+  int64 updated_at = 3; // Время последнего обновления в формате Unix timestamp
+  ResponseListStatus status = 4; // Статус ответа
+  string message = 5; // Сообщение об ошибке или успехе
+}
+
+message TextDataResponse {
+  int64 id = 1; // Уникальный идентификатор текста
+  TextData data = 2; // Данные текста
+  int64 updated_at = 3; // Время последнего обновления в формате Unix timestamp
+  ResponseListStatus status = 4; // Статус ответа
+  string message = 5; // Сообщение об ошибке или успехе
+}
+
+message BinaryDataResponse {
+  int64 id = 1; // Уникальный идентификатор двоичных данных
+  BinaryData data = 2; // Двоичные данные
+  int64 updated_at = 3; // Время последнего обновления в формате Unix timestamp
+  ResponseListStatus status = 4; // Статус ответа
+  string message = 5; // Сообщение об ошибке или успехе
+}
+
+message CardDataResponse {
+  int64 id = 1; // Уникальный идентификатор карты
+  CardData data = 2; // Данные карты
+  int64 updated_at = 3; // Время последнего обновления в формате Unix timestamp
+  ResponseListStatus status = 4; // Статус ответа
+  string message = 5; // Сообщение об ошибке или успехе
+}
+

@@ -52,18 +52,33 @@ type handler struct {
 
 	authService auth.Service
 	dataService data.Service
+
+	offset    int64
+	listMapID map[int]int64
+	listCount int // количество элементов в списке
 }
 
 func New(p Params) Handler {
 	return &handler{
 		authService: p.AuthService,
 		dataService: p.DataService,
+		listMapID:   make(map[int]int64),
 	}
 }
 
 var ignoreInput = map[string]bool{
 	constants.CmdUp:   true,
 	constants.CmdDown: true,
+}
+
+func (h *handler) flushMapID() {
+	if h.listMapID == nil {
+		h.listMapID = make(map[int]int64)
+	}
+
+	for k := range h.listMapID {
+		delete(h.listMapID, k)
+	}
 }
 
 func (h *handler) HandleInput(state, input string) (nextState, screen string, err error) {
@@ -113,6 +128,13 @@ func (h *handler) HandleInput(state, input string) (nextState, screen string, er
 
 	case constants.StateAddFileData:
 		return h.stateAddFileData(input)
+
+	case constants.StateGetDataList:
+		return h.stateGetDataList(input)
+	case constants.StateLoginList:
+		return h.stateLoginList(input)
+	case constants.StateCardList:
+		return h.stateCardList(input)
 	}
 
 	return constants.StateMainMenu, h.RenderMenu(), nil

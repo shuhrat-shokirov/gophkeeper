@@ -30,6 +30,18 @@ type Gateway interface {
 	SaveText(ctx context.Context, userID int64, data *Text) error
 	SaveCard(ctx context.Context, userID int64, data *Card) error
 	SaveBinary(ctx context.Context, userID int64, data *Binary) error
+
+	GetLoginList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error)
+	GetLoginByID(ctx context.Context, userID, id int64) (*LoginInfo, error)
+
+	GetCardList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error)
+	GetCardByID(ctx context.Context, userID, id int64) (*CardInfo, error)
+
+	GetTextList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error)
+	GetTextByID(ctx context.Context, userID, id int64) (*TextInfo, error)
+
+	GetBinaryList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error)
+	GetBinaryByID(ctx context.Context, userID, id int64) (*BinaryInfo, error)
 }
 
 type gateway struct {
