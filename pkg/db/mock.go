@@ -176,3 +176,59 @@ func (m *MockBatchResults) QueryRow() pgx.Row {
 	args := m.Called()
 	return args.Get(0).(pgx.Row)
 }
+
+type MockRows struct {
+	mock.Mock
+}
+
+type MockResult struct {
+	mock.Mock
+}
+
+func (m *MockRows) Next() bool {
+	ret := m.Called()
+	return ret.Bool(0)
+}
+
+func (m *MockRows) Scan(dest ...any) error {
+	ret := m.Called(dest...)
+	return ret.Error(0)
+}
+
+func (m *MockRows) Close() {
+	m.Called()
+}
+
+func (m *MockRows) Err() error {
+	ret := m.Called()
+	return ret.Error(0)
+}
+
+func (m *MockRows) Conn() *pgx.Conn {
+	ret := m.Called()
+	return ret.Get(0).(*pgx.Conn)
+}
+
+func (m *MockRows) FieldDescriptions() []pgconn.FieldDescription {
+	ret := m.Called()
+	return ret.Get(0).([]pgconn.FieldDescription)
+}
+
+func (m *MockRows) RawValues() [][]byte {
+	ret := m.Called()
+	return ret.Get(0).([][]byte)
+}
+
+func (m *MockRows) Values() ([]interface{}, error) {
+	ret := m.Called()
+	return ret.Get(0).([]interface{}), ret.Error(1)
+}
+
+func (m *MockRows) CommandTag() pgconn.CommandTag {
+	return pgconn.CommandTag{}
+}
+
+func (m *MockResult) RowsAffected() int64 {
+	ret := m.Called()
+	return ret.Get(0).(int64)
+}
