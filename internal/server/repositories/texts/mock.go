@@ -20,3 +20,7 @@ func (m *MockRepo) Save(ctx context.Context, data *TextData) (int64, error) {
 }
 
 var _ Repo = (*MockRepo)(nil)
+
+func NewMockRepo() *MockRepo {
+	return &MockRepo{}
+}

@@ -36,3 +36,7 @@ func (m *MockRepo) GetByID(ctx context.Context, id int64) (*Info, error) {
 }
 
 var _ Repo = (*MockRepo)(nil)
+
+func NewMockRepo() *MockRepo {
+	return &MockRepo{}
+}
