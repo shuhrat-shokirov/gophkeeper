@@ -29,10 +29,6 @@ func (s *service) ConfirmOTP(ctx context.Context, id, code string) (*ConfirmResp
 
 	_, err = s.userRepo.GetUserByID(ctx, otp.UserID)
 	if err != nil {
-		if errors.Is(err, errorx.ErrNotFound) {
-			return nil, errorx.ErrNotFound
-		}
-
 		return nil, fmt.Errorf("error getting user by id: %w", err)
 	}
 
