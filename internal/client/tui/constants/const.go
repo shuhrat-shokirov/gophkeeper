@@ -18,6 +18,9 @@ const (
 	StateAddPasswordData = "add_password_data"
 	StateSuccessAddData  = "success_add_data"
 
+	StateLoginList = "login_data_list"
+	StateCardList  = "card_data_list"
+
 	StateAddTextData = "add_text_data"
 
 	StateAddCardPan    = "add_card_pan"
@@ -35,4 +38,6 @@ const (
 	CmdEnter     = "enter"
 	CmdBack      = "backspace"
 	CmdForceQuit = "ctrl+c"
+	CmdNextPage  = "n"
+	CmdPrevPage  = "p"
 )

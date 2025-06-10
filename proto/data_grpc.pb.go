@@ -19,10 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	DataService_SaveLogin_FullMethodName  = "/data.DataService/SaveLogin"
-	DataService_SaveText_FullMethodName   = "/data.DataService/SaveText"
-	DataService_SaveBinary_FullMethodName = "/data.DataService/SaveBinary"
-	DataService_SaveCard_FullMethodName   = "/data.DataService/SaveCard"
+	DataService_SaveLogin_FullMethodName     = "/data.DataService/SaveLogin"
+	DataService_SaveText_FullMethodName      = "/data.DataService/SaveText"
+	DataService_SaveBinary_FullMethodName    = "/data.DataService/SaveBinary"
+	DataService_SaveCard_FullMethodName      = "/data.DataService/SaveCard"
+	DataService_GetLoginList_FullMethodName  = "/data.DataService/GetLoginList"
+	DataService_GetLoginByID_FullMethodName  = "/data.DataService/GetLoginByID"
+	DataService_GetTextList_FullMethodName   = "/data.DataService/GetTextList"
+	DataService_GetTextByID_FullMethodName   = "/data.DataService/GetTextByID"
+	DataService_GetBinaryList_FullMethodName = "/data.DataService/GetBinaryList"
+	DataService_GetBinaryByID_FullMethodName = "/data.DataService/GetBinaryByID"
+	DataService_GetCardList_FullMethodName   = "/data.DataService/GetCardList"
+	DataService_GetCardByID_FullMethodName   = "/data.DataService/GetCardByID"
 )
 
 // DataServiceClient is the client API for DataService service.
@@ -33,6 +41,14 @@ type DataServiceClient interface {
 	SaveText(ctx context.Context, in *TextData, opts ...grpc.CallOption) (*Response, error)
 	SaveBinary(ctx context.Context, in *BinaryData, opts ...grpc.CallOption) (*Response, error)
 	SaveCard(ctx context.Context, in *CardData, opts ...grpc.CallOption) (*Response, error)
+	GetLoginList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	GetLoginByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*LoginDataResponse, error)
+	GetTextList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	GetTextByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*TextDataResponse, error)
+	GetBinaryList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	GetBinaryByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BinaryDataResponse, error)
+	GetCardList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	GetCardByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*CardDataResponse, error)
 }
 
 type dataServiceClient struct {
@@ -83,6 +99,86 @@ func (c *dataServiceClient) SaveCard(ctx context.Context, in *CardData, opts ...
 	return out, nil
 }
 
+func (c *dataServiceClient) GetLoginList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, DataService_GetLoginList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetLoginByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*LoginDataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginDataResponse)
+	err := c.cc.Invoke(ctx, DataService_GetLoginByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetTextList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, DataService_GetTextList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetTextByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*TextDataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TextDataResponse)
+	err := c.cc.Invoke(ctx, DataService_GetTextByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetBinaryList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, DataService_GetBinaryList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetBinaryByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BinaryDataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BinaryDataResponse)
+	err := c.cc.Invoke(ctx, DataService_GetBinaryByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetCardList(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, DataService_GetCardList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataServiceClient) GetCardByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*CardDataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CardDataResponse)
+	err := c.cc.Invoke(ctx, DataService_GetCardByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataServiceServer is the server API for DataService service.
 // All implementations must embed UnimplementedDataServiceServer
 // for forward compatibility.
@@ -91,6 +187,14 @@ type DataServiceServer interface {
 	SaveText(context.Context, *TextData) (*Response, error)
 	SaveBinary(context.Context, *BinaryData) (*Response, error)
 	SaveCard(context.Context, *CardData) (*Response, error)
+	GetLoginList(context.Context, *ListRequest) (*ListResponse, error)
+	GetLoginByID(context.Context, *IDRequest) (*LoginDataResponse, error)
+	GetTextList(context.Context, *ListRequest) (*ListResponse, error)
+	GetTextByID(context.Context, *IDRequest) (*TextDataResponse, error)
+	GetBinaryList(context.Context, *ListRequest) (*ListResponse, error)
+	GetBinaryByID(context.Context, *IDRequest) (*BinaryDataResponse, error)
+	GetCardList(context.Context, *ListRequest) (*ListResponse, error)
+	GetCardByID(context.Context, *IDRequest) (*CardDataResponse, error)
 	mustEmbedUnimplementedDataServiceServer()
 }
 
@@ -112,6 +216,30 @@ func (UnimplementedDataServiceServer) SaveBinary(context.Context, *BinaryData) (
 }
 func (UnimplementedDataServiceServer) SaveCard(context.Context, *CardData) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveCard not implemented")
+}
+func (UnimplementedDataServiceServer) GetLoginList(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLoginList not implemented")
+}
+func (UnimplementedDataServiceServer) GetLoginByID(context.Context, *IDRequest) (*LoginDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLoginByID not implemented")
+}
+func (UnimplementedDataServiceServer) GetTextList(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTextList not implemented")
+}
+func (UnimplementedDataServiceServer) GetTextByID(context.Context, *IDRequest) (*TextDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTextByID not implemented")
+}
+func (UnimplementedDataServiceServer) GetBinaryList(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBinaryList not implemented")
+}
+func (UnimplementedDataServiceServer) GetBinaryByID(context.Context, *IDRequest) (*BinaryDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBinaryByID not implemented")
+}
+func (UnimplementedDataServiceServer) GetCardList(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCardList not implemented")
+}
+func (UnimplementedDataServiceServer) GetCardByID(context.Context, *IDRequest) (*CardDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCardByID not implemented")
 }
 func (UnimplementedDataServiceServer) mustEmbedUnimplementedDataServiceServer() {}
 func (UnimplementedDataServiceServer) testEmbeddedByValue()                     {}
@@ -206,6 +334,150 @@ func _DataService_SaveCard_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataService_GetLoginList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetLoginList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetLoginList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetLoginList(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetLoginByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetLoginByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetLoginByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetLoginByID(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetTextList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetTextList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetTextList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetTextList(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetTextByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetTextByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetTextByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetTextByID(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetBinaryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetBinaryList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetBinaryList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetBinaryList(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetBinaryByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetBinaryByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetBinaryByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetBinaryByID(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetCardList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetCardList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetCardList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetCardList(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataService_GetCardByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).GetCardByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_GetCardByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).GetCardByID(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataService_ServiceDesc is the grpc.ServiceDesc for DataService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +500,38 @@ var DataService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SaveCard",
 			Handler:    _DataService_SaveCard_Handler,
+		},
+		{
+			MethodName: "GetLoginList",
+			Handler:    _DataService_GetLoginList_Handler,
+		},
+		{
+			MethodName: "GetLoginByID",
+			Handler:    _DataService_GetLoginByID_Handler,
+		},
+		{
+			MethodName: "GetTextList",
+			Handler:    _DataService_GetTextList_Handler,
+		},
+		{
+			MethodName: "GetTextByID",
+			Handler:    _DataService_GetTextByID_Handler,
+		},
+		{
+			MethodName: "GetBinaryList",
+			Handler:    _DataService_GetBinaryList_Handler,
+		},
+		{
+			MethodName: "GetBinaryByID",
+			Handler:    _DataService_GetBinaryByID_Handler,
+		},
+		{
+			MethodName: "GetCardList",
+			Handler:    _DataService_GetCardList_Handler,
+		},
+		{
+			MethodName: "GetCardByID",
+			Handler:    _DataService_GetCardByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

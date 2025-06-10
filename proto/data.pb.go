@@ -26,7 +26,7 @@ type ResponseStatus int32
 const (
 	ResponseStatus_STATUS_UNSPECIFIED ResponseStatus = 0
 	ResponseStatus_SUCCESS            ResponseStatus = 1
-	ResponseStatus_ERROR              ResponseStatus = 3
+	ResponseStatus_ERROR              ResponseStatus = 2
 )
 
 // Enum value maps for ResponseStatus.
@@ -34,12 +34,12 @@ var (
 	ResponseStatus_name = map[int32]string{
 		0: "STATUS_UNSPECIFIED",
 		1: "SUCCESS",
-		3: "ERROR",
+		2: "ERROR",
 	}
 	ResponseStatus_value = map[string]int32{
 		"STATUS_UNSPECIFIED": 0,
 		"SUCCESS":            1,
-		"ERROR":              3,
+		"ERROR":              2,
 	}
 )
 
@@ -68,6 +68,58 @@ func (x ResponseStatus) Number() protoreflect.EnumNumber {
 // Deprecated: Use ResponseStatus.Descriptor instead.
 func (ResponseStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_data_proto_rawDescGZIP(), []int{0}
+}
+
+type ResponseListStatus int32
+
+const (
+	ResponseListStatus_LIST_STATUS_UNSPECIFIED ResponseListStatus = 0
+	ResponseListStatus_LIST_SUCCESS            ResponseListStatus = 1
+	ResponseListStatus_LIST_NOT_FOUND          ResponseListStatus = 2
+	ResponseListStatus_LIST_ERROR              ResponseListStatus = 3
+)
+
+// Enum value maps for ResponseListStatus.
+var (
+	ResponseListStatus_name = map[int32]string{
+		0: "LIST_STATUS_UNSPECIFIED",
+		1: "LIST_SUCCESS",
+		2: "LIST_NOT_FOUND",
+		3: "LIST_ERROR",
+	}
+	ResponseListStatus_value = map[string]int32{
+		"LIST_STATUS_UNSPECIFIED": 0,
+		"LIST_SUCCESS":            1,
+		"LIST_NOT_FOUND":          2,
+		"LIST_ERROR":              3,
+	}
+)
+
+func (x ResponseListStatus) Enum() *ResponseListStatus {
+	p := new(ResponseListStatus)
+	*p = x
+	return p
+}
+
+func (x ResponseListStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ResponseListStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_data_proto_enumTypes[1].Descriptor()
+}
+
+func (ResponseListStatus) Type() protoreflect.EnumType {
+	return &file_proto_data_proto_enumTypes[1]
+}
+
+func (x ResponseListStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ResponseListStatus.Descriptor instead.
+func (ResponseListStatus) EnumDescriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{1}
 }
 
 type BaseData struct {
@@ -370,60 +422,18 @@ func (x *CardData) GetCvv() string {
 	return ""
 }
 
-type IDRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            *string                `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *IDRequest) Reset() {
-	*x = IDRequest{}
-	mi := &file_proto_data_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *IDRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*IDRequest) ProtoMessage() {}
-
-func (x *IDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_data_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use IDRequest.ProtoReflect.Descriptor instead.
-func (*IDRequest) Descriptor() ([]byte, []int) {
-	return file_proto_data_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *IDRequest) GetId() string {
-	if x != nil && x.Id != nil {
-		return *x.Id
-	}
-	return ""
-}
-
 type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        *string                `protobuf:"bytes,1,opt,name=user_id,json=userId" json:"user_id,omitempty"`
+	UserId        *int64                 `protobuf:"varint,1,opt,name=user_id,json=userId" json:"user_id,omitempty"`
+	Limit         *int64                 `protobuf:"varint,2,opt,name=limit" json:"limit,omitempty"`   // Ограничение на количество возвращаемых элементов
+	Offset        *int64                 `protobuf:"varint,3,opt,name=offset" json:"offset,omitempty"` // Смещение для пагинации
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
-	mi := &file_proto_data_proto_msgTypes[6]
+	mi := &file_proto_data_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -435,7 +445,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_data_proto_msgTypes[6]
+	mi := &file_proto_data_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -448,14 +458,28 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_proto_data_proto_rawDescGZIP(), []int{6}
+	return file_proto_data_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ListRequest) GetUserId() string {
+func (x *ListRequest) GetUserId() int64 {
 	if x != nil && x.UserId != nil {
 		return *x.UserId
 	}
-	return ""
+	return 0
+}
+
+func (x *ListRequest) GetLimit() int64 {
+	if x != nil && x.Limit != nil {
+		return *x.Limit
+	}
+	return 0
+}
+
+func (x *ListRequest) GetOffset() int64 {
+	if x != nil && x.Offset != nil {
+		return *x.Offset
+	}
+	return 0
 }
 
 type Response struct {
@@ -468,7 +492,7 @@ type Response struct {
 
 func (x *Response) Reset() {
 	*x = Response{}
-	mi := &file_proto_data_proto_msgTypes[7]
+	mi := &file_proto_data_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -480,7 +504,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_data_proto_msgTypes[7]
+	mi := &file_proto_data_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -493,7 +517,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_proto_data_proto_rawDescGZIP(), []int{7}
+	return file_proto_data_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Response) GetStatus() ResponseStatus {
@@ -504,6 +528,490 @@ func (x *Response) GetStatus() ResponseStatus {
 }
 
 func (x *Response) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+type ListResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"` // Уникальный идентификатор объекта
+	Title         *string                `protobuf:"bytes,2,opt,name=title" json:"title,omitempty"`
+	CreatedAt     *int64                 `protobuf:"varint,3,opt,name=created_at,json=createdAt" json:"created_at,omitempty"`
+	UpdatedAt     *int64                 `protobuf:"varint,4,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListResp) Reset() {
+	*x = ListResp{}
+	mi := &file_proto_data_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResp) ProtoMessage() {}
+
+func (x *ListResp) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResp.ProtoReflect.Descriptor instead.
+func (*ListResp) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ListResp) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *ListResp) GetTitle() string {
+	if x != nil && x.Title != nil {
+		return *x.Title
+	}
+	return ""
+}
+
+func (x *ListResp) GetCreatedAt() int64 {
+	if x != nil && x.CreatedAt != nil {
+		return *x.CreatedAt
+	}
+	return 0
+}
+
+func (x *ListResp) GetUpdatedAt() int64 {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return 0
+}
+
+type ListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        *ResponseListStatus    `protobuf:"varint,1,opt,name=status,enum=data.ResponseListStatus" json:"status,omitempty"` // Статус ответа
+	Items         []*ListResp            `protobuf:"bytes,2,rep,name=items" json:"items,omitempty"`                                 // Список объектов
+	Message       *string                `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`                             // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
+	mi := &file_proto_data_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResponse) ProtoMessage() {}
+
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListResponse) GetStatus() ResponseListStatus {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ResponseListStatus_LIST_STATUS_UNSPECIFIED
+}
+
+func (x *ListResponse) GetItems() []*ListResp {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ListResponse) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+type IDRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`                       // Уникальный идентификатор объекта
+	UserId        *int64                 `protobuf:"varint,2,opt,name=user_id,json=userId" json:"user_id,omitempty"` // Идентификатор пользователя для проверки доступа
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IDRequest) Reset() {
+	*x = IDRequest{}
+	mi := &file_proto_data_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IDRequest) ProtoMessage() {}
+
+func (x *IDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IDRequest.ProtoReflect.Descriptor instead.
+func (*IDRequest) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *IDRequest) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *IDRequest) GetUserId() int64 {
+	if x != nil && x.UserId != nil {
+		return *x.UserId
+	}
+	return 0
+}
+
+type LoginDataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`                                      // Уникальный идентификатор логина
+	Data          *LoginData             `protobuf:"bytes,2,opt,name=data" json:"data,omitempty"`                                   // Данные логина
+	UpdatedAt     *int64                 `protobuf:"varint,3,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`       // Время последнего обновления в формате Unix timestamp
+	Status        *ResponseListStatus    `protobuf:"varint,4,opt,name=status,enum=data.ResponseListStatus" json:"status,omitempty"` // Статус ответа
+	Message       *string                `protobuf:"bytes,5,opt,name=message" json:"message,omitempty"`                             // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginDataResponse) Reset() {
+	*x = LoginDataResponse{}
+	mi := &file_proto_data_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginDataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginDataResponse) ProtoMessage() {}
+
+func (x *LoginDataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginDataResponse.ProtoReflect.Descriptor instead.
+func (*LoginDataResponse) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *LoginDataResponse) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *LoginDataResponse) GetData() *LoginData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *LoginDataResponse) GetUpdatedAt() int64 {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return 0
+}
+
+func (x *LoginDataResponse) GetStatus() ResponseListStatus {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ResponseListStatus_LIST_STATUS_UNSPECIFIED
+}
+
+func (x *LoginDataResponse) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+type TextDataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`                                      // Уникальный идентификатор текста
+	Data          *TextData              `protobuf:"bytes,2,opt,name=data" json:"data,omitempty"`                                   // Данные текста
+	UpdatedAt     *int64                 `protobuf:"varint,3,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`       // Время последнего обновления в формате Unix timestamp
+	Status        *ResponseListStatus    `protobuf:"varint,4,opt,name=status,enum=data.ResponseListStatus" json:"status,omitempty"` // Статус ответа
+	Message       *string                `protobuf:"bytes,5,opt,name=message" json:"message,omitempty"`                             // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TextDataResponse) Reset() {
+	*x = TextDataResponse{}
+	mi := &file_proto_data_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TextDataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TextDataResponse) ProtoMessage() {}
+
+func (x *TextDataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TextDataResponse.ProtoReflect.Descriptor instead.
+func (*TextDataResponse) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *TextDataResponse) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *TextDataResponse) GetData() *TextData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *TextDataResponse) GetUpdatedAt() int64 {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return 0
+}
+
+func (x *TextDataResponse) GetStatus() ResponseListStatus {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ResponseListStatus_LIST_STATUS_UNSPECIFIED
+}
+
+func (x *TextDataResponse) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+type BinaryDataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`                                      // Уникальный идентификатор двоичных данных
+	Data          *BinaryData            `protobuf:"bytes,2,opt,name=data" json:"data,omitempty"`                                   // Двоичные данные
+	UpdatedAt     *int64                 `protobuf:"varint,3,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`       // Время последнего обновления в формате Unix timestamp
+	Status        *ResponseListStatus    `protobuf:"varint,4,opt,name=status,enum=data.ResponseListStatus" json:"status,omitempty"` // Статус ответа
+	Message       *string                `protobuf:"bytes,5,opt,name=message" json:"message,omitempty"`                             // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BinaryDataResponse) Reset() {
+	*x = BinaryDataResponse{}
+	mi := &file_proto_data_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BinaryDataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BinaryDataResponse) ProtoMessage() {}
+
+func (x *BinaryDataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BinaryDataResponse.ProtoReflect.Descriptor instead.
+func (*BinaryDataResponse) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *BinaryDataResponse) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *BinaryDataResponse) GetData() *BinaryData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *BinaryDataResponse) GetUpdatedAt() int64 {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return 0
+}
+
+func (x *BinaryDataResponse) GetStatus() ResponseListStatus {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ResponseListStatus_LIST_STATUS_UNSPECIFIED
+}
+
+func (x *BinaryDataResponse) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+type CardDataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`                                      // Уникальный идентификатор карты
+	Data          *CardData              `protobuf:"bytes,2,opt,name=data" json:"data,omitempty"`                                   // Данные карты
+	UpdatedAt     *int64                 `protobuf:"varint,3,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`       // Время последнего обновления в формате Unix timestamp
+	Status        *ResponseListStatus    `protobuf:"varint,4,opt,name=status,enum=data.ResponseListStatus" json:"status,omitempty"` // Статус ответа
+	Message       *string                `protobuf:"bytes,5,opt,name=message" json:"message,omitempty"`                             // Сообщение об ошибке или успехе
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CardDataResponse) Reset() {
+	*x = CardDataResponse{}
+	mi := &file_proto_data_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CardDataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CardDataResponse) ProtoMessage() {}
+
+func (x *CardDataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_data_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CardDataResponse.ProtoReflect.Descriptor instead.
+func (*CardDataResponse) Descriptor() ([]byte, []int) {
+	return file_proto_data_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CardDataResponse) GetId() int64 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *CardDataResponse) GetData() *CardData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *CardDataResponse) GetUpdatedAt() int64 {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return 0
+}
+
+func (x *CardDataResponse) GetStatus() ResponseListStatus {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ResponseListStatus_LIST_STATUS_UNSPECIFIED
+}
+
+func (x *CardDataResponse) GetMessage() string {
 	if x != nil && x.Message != nil {
 		return *x.Message
 	}
@@ -536,24 +1044,80 @@ const file_proto_data_proto_rawDesc = "" +
 	"\x04meta\x18\x01 \x01(\v2\x0e.data.BaseDataR\x04meta\x12\x10\n" +
 	"\x03pan\x18\x02 \x01(\tR\x03pan\x12\x16\n" +
 	"\x06expiry\x18\x03 \x01(\tR\x06expiry\x12\x10\n" +
-	"\x03cvv\x18\x04 \x01(\tR\x03cvv\"\x1b\n" +
-	"\tIDRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"&\n" +
+	"\x03cvv\x18\x04 \x01(\tR\x03cvv\"T\n" +
 	"\vListRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"R\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x03R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x03R\x06offset\"R\n" +
 	"\bResponse\x12,\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x14.data.ResponseStatusR\x06status\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage*@\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"n\n" +
+	"\bListResp\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\x03R\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x04 \x01(\x03R\tupdatedAt\"\x80\x01\n" +
+	"\fListResponse\x120\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x18.data.ResponseListStatusR\x06status\x12$\n" +
+	"\x05items\x18\x02 \x03(\v2\x0e.data.ListRespR\x05items\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"4\n" +
+	"\tIDRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\"\xb3\x01\n" +
+	"\x11LoginDataResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12#\n" +
+	"\x04data\x18\x02 \x01(\v2\x0f.data.LoginDataR\x04data\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\x03R\tupdatedAt\x120\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x18.data.ResponseListStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\"\xb1\x01\n" +
+	"\x10TextDataResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\"\n" +
+	"\x04data\x18\x02 \x01(\v2\x0e.data.TextDataR\x04data\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\x03R\tupdatedAt\x120\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x18.data.ResponseListStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\"\xb5\x01\n" +
+	"\x12BinaryDataResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12$\n" +
+	"\x04data\x18\x02 \x01(\v2\x10.data.BinaryDataR\x04data\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\x03R\tupdatedAt\x120\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x18.data.ResponseListStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\"\xb1\x01\n" +
+	"\x10CardDataResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\"\n" +
+	"\x04data\x18\x02 \x01(\v2\x0e.data.CardDataR\x04data\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\x03R\tupdatedAt\x120\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x18.data.ResponseListStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage*@\n" +
 	"\x0eResponseStatus\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aSUCCESS\x10\x01\x12\t\n" +
-	"\x05ERROR\x10\x032\xc3\x01\n" +
+	"\x05ERROR\x10\x02*g\n" +
+	"\x12ResponseListStatus\x12\x1b\n" +
+	"\x17LIST_STATUS_UNSPECIFIED\x10\x00\x12\x10\n" +
+	"\fLIST_SUCCESS\x10\x01\x12\x12\n" +
+	"\x0eLIST_NOT_FOUND\x10\x02\x12\x0e\n" +
+	"\n" +
+	"LIST_ERROR\x10\x032\x84\x05\n" +
 	"\vDataService\x12,\n" +
 	"\tSaveLogin\x12\x0f.data.LoginData\x1a\x0e.data.Response\x12*\n" +
 	"\bSaveText\x12\x0e.data.TextData\x1a\x0e.data.Response\x12.\n" +
 	"\n" +
 	"SaveBinary\x12\x10.data.BinaryData\x1a\x0e.data.Response\x12*\n" +
-	"\bSaveCard\x12\x0e.data.CardData\x1a\x0e.data.ResponseB\bZ\x06proto/b\beditionsp\xe8\a"
+	"\bSaveCard\x12\x0e.data.CardData\x1a\x0e.data.Response\x125\n" +
+	"\fGetLoginList\x12\x11.data.ListRequest\x1a\x12.data.ListResponse\x128\n" +
+	"\fGetLoginByID\x12\x0f.data.IDRequest\x1a\x17.data.LoginDataResponse\x124\n" +
+	"\vGetTextList\x12\x11.data.ListRequest\x1a\x12.data.ListResponse\x126\n" +
+	"\vGetTextByID\x12\x0f.data.IDRequest\x1a\x16.data.TextDataResponse\x126\n" +
+	"\rGetBinaryList\x12\x11.data.ListRequest\x1a\x12.data.ListResponse\x12:\n" +
+	"\rGetBinaryByID\x12\x0f.data.IDRequest\x1a\x18.data.BinaryDataResponse\x124\n" +
+	"\vGetCardList\x12\x11.data.ListRequest\x1a\x12.data.ListResponse\x126\n" +
+	"\vGetCardByID\x12\x0f.data.IDRequest\x1a\x16.data.CardDataResponseB\bZ\x06proto/b\beditionsp\xe8\a"
 
 var (
 	file_proto_data_proto_rawDescOnce sync.Once
@@ -567,38 +1131,71 @@ func file_proto_data_proto_rawDescGZIP() []byte {
 	return file_proto_data_proto_rawDescData
 }
 
-var file_proto_data_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_data_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_proto_data_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_proto_data_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_proto_data_proto_goTypes = []any{
-	(ResponseStatus)(0), // 0: data.ResponseStatus
-	(*BaseData)(nil),    // 1: data.BaseData
-	(*LoginData)(nil),   // 2: data.LoginData
-	(*TextData)(nil),    // 3: data.TextData
-	(*BinaryData)(nil),  // 4: data.BinaryData
-	(*CardData)(nil),    // 5: data.CardData
-	(*IDRequest)(nil),   // 6: data.IDRequest
-	(*ListRequest)(nil), // 7: data.ListRequest
-	(*Response)(nil),    // 8: data.Response
+	(ResponseStatus)(0),        // 0: data.ResponseStatus
+	(ResponseListStatus)(0),    // 1: data.ResponseListStatus
+	(*BaseData)(nil),           // 2: data.BaseData
+	(*LoginData)(nil),          // 3: data.LoginData
+	(*TextData)(nil),           // 4: data.TextData
+	(*BinaryData)(nil),         // 5: data.BinaryData
+	(*CardData)(nil),           // 6: data.CardData
+	(*ListRequest)(nil),        // 7: data.ListRequest
+	(*Response)(nil),           // 8: data.Response
+	(*ListResp)(nil),           // 9: data.ListResp
+	(*ListResponse)(nil),       // 10: data.ListResponse
+	(*IDRequest)(nil),          // 11: data.IDRequest
+	(*LoginDataResponse)(nil),  // 12: data.LoginDataResponse
+	(*TextDataResponse)(nil),   // 13: data.TextDataResponse
+	(*BinaryDataResponse)(nil), // 14: data.BinaryDataResponse
+	(*CardDataResponse)(nil),   // 15: data.CardDataResponse
 }
 var file_proto_data_proto_depIdxs = []int32{
-	1, // 0: data.LoginData.meta:type_name -> data.BaseData
-	1, // 1: data.TextData.meta:type_name -> data.BaseData
-	1, // 2: data.BinaryData.meta:type_name -> data.BaseData
-	1, // 3: data.CardData.meta:type_name -> data.BaseData
-	0, // 4: data.Response.status:type_name -> data.ResponseStatus
-	2, // 5: data.DataService.SaveLogin:input_type -> data.LoginData
-	3, // 6: data.DataService.SaveText:input_type -> data.TextData
-	4, // 7: data.DataService.SaveBinary:input_type -> data.BinaryData
-	5, // 8: data.DataService.SaveCard:input_type -> data.CardData
-	8, // 9: data.DataService.SaveLogin:output_type -> data.Response
-	8, // 10: data.DataService.SaveText:output_type -> data.Response
-	8, // 11: data.DataService.SaveBinary:output_type -> data.Response
-	8, // 12: data.DataService.SaveCard:output_type -> data.Response
-	9, // [9:13] is the sub-list for method output_type
-	5, // [5:9] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	2,  // 0: data.LoginData.meta:type_name -> data.BaseData
+	2,  // 1: data.TextData.meta:type_name -> data.BaseData
+	2,  // 2: data.BinaryData.meta:type_name -> data.BaseData
+	2,  // 3: data.CardData.meta:type_name -> data.BaseData
+	0,  // 4: data.Response.status:type_name -> data.ResponseStatus
+	1,  // 5: data.ListResponse.status:type_name -> data.ResponseListStatus
+	9,  // 6: data.ListResponse.items:type_name -> data.ListResp
+	3,  // 7: data.LoginDataResponse.data:type_name -> data.LoginData
+	1,  // 8: data.LoginDataResponse.status:type_name -> data.ResponseListStatus
+	4,  // 9: data.TextDataResponse.data:type_name -> data.TextData
+	1,  // 10: data.TextDataResponse.status:type_name -> data.ResponseListStatus
+	5,  // 11: data.BinaryDataResponse.data:type_name -> data.BinaryData
+	1,  // 12: data.BinaryDataResponse.status:type_name -> data.ResponseListStatus
+	6,  // 13: data.CardDataResponse.data:type_name -> data.CardData
+	1,  // 14: data.CardDataResponse.status:type_name -> data.ResponseListStatus
+	3,  // 15: data.DataService.SaveLogin:input_type -> data.LoginData
+	4,  // 16: data.DataService.SaveText:input_type -> data.TextData
+	5,  // 17: data.DataService.SaveBinary:input_type -> data.BinaryData
+	6,  // 18: data.DataService.SaveCard:input_type -> data.CardData
+	7,  // 19: data.DataService.GetLoginList:input_type -> data.ListRequest
+	11, // 20: data.DataService.GetLoginByID:input_type -> data.IDRequest
+	7,  // 21: data.DataService.GetTextList:input_type -> data.ListRequest
+	11, // 22: data.DataService.GetTextByID:input_type -> data.IDRequest
+	7,  // 23: data.DataService.GetBinaryList:input_type -> data.ListRequest
+	11, // 24: data.DataService.GetBinaryByID:input_type -> data.IDRequest
+	7,  // 25: data.DataService.GetCardList:input_type -> data.ListRequest
+	11, // 26: data.DataService.GetCardByID:input_type -> data.IDRequest
+	8,  // 27: data.DataService.SaveLogin:output_type -> data.Response
+	8,  // 28: data.DataService.SaveText:output_type -> data.Response
+	8,  // 29: data.DataService.SaveBinary:output_type -> data.Response
+	8,  // 30: data.DataService.SaveCard:output_type -> data.Response
+	10, // 31: data.DataService.GetLoginList:output_type -> data.ListResponse
+	12, // 32: data.DataService.GetLoginByID:output_type -> data.LoginDataResponse
+	10, // 33: data.DataService.GetTextList:output_type -> data.ListResponse
+	13, // 34: data.DataService.GetTextByID:output_type -> data.TextDataResponse
+	10, // 35: data.DataService.GetBinaryList:output_type -> data.ListResponse
+	14, // 36: data.DataService.GetBinaryByID:output_type -> data.BinaryDataResponse
+	10, // 37: data.DataService.GetCardList:output_type -> data.ListResponse
+	15, // 38: data.DataService.GetCardByID:output_type -> data.CardDataResponse
+	27, // [27:39] is the sub-list for method output_type
+	15, // [15:27] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_proto_data_proto_init() }
@@ -611,8 +1208,8 @@ func file_proto_data_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_data_proto_rawDesc), len(file_proto_data_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   8,
+			NumEnums:      2,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

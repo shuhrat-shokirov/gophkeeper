@@ -9,6 +9,12 @@ type LoginData struct {
 	CreatedAt int64
 }
 
+type LoginInfo struct {
+	ID int64
+	LoginData
+	UpdatedAt int64
+}
+
 type TextData struct {
 	UserID    int64
 	Title     string
@@ -33,4 +39,11 @@ type BinaryData struct {
 	Content   []byte
 	Note      string
 	CreatedAt int64
+}
+
+type LoginListItem struct {
+	ID        int64
+	Title     string
+	CreatedAt int64
+	UpdatedAt int64
 }

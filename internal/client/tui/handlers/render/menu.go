@@ -69,7 +69,9 @@ func (h *handler) stateAuthorizedMainMenu(input string) (state, message string, 
 		case 0: // Добавить данные
 			return constants.StateAddData, h.renderAddDataMenu(), nil
 		case 1: // Показать данные
-			return constants.StateGetDataList, "Показать данные", nil
+			h.offset = 0   // Сброс смещения при переходе в меню получения данных
+			h.position = 0 // Сброс позиции при переходе в меню получения данных
+			return constants.StateGetDataList, h.renderGetDataList(), nil
 		case 2: // Выйти
 			return constants.StateLogout, "Нажмите Enter для выхода или Back для возврата в главное меню.", nil
 		case 3: // Завершить работу

@@ -27,6 +27,9 @@ type Service interface {
 	SaveText(ctx context.Context, data *TextData) error
 	SaveCard(ctx context.Context, data *CardData) error
 	SaveBinary(ctx context.Context, data *BinaryData) error
+
+	GetLoginList(ctx context.Context, userID, limit, offset int64) ([]LoginListItem, error)
+	GetLoginByID(ctx context.Context, id int64) (*LoginInfo, error)
 }
 
 type service struct {
