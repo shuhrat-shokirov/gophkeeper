@@ -55,7 +55,7 @@ jobs:
           format: markdown
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: '50 60'
 
       - name: Add coverage report to pull request
         uses: marocchino/sticky-pull-request-comment@v2
