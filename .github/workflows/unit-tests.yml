@@ -22,6 +22,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Run services
+        uses: ./.github/services
+
       - name: Setup Go
         uses: actions/setup-go@v5
         with:

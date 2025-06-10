@@ -1,0 +1,7 @@
+name: services
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PostgreSQL Server
+      uses: ./.github/services/postgresql

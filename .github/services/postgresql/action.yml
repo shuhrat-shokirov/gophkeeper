@@ -1,0 +1,16 @@
+name: postgresql
+description: 'PostgreSQL service for testing'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PostgreSQL Server
+      shell: bash
+      working-directory: fixtures/postgresql
+      run: docker compose -f docker-compose.yml up -d --wait
+    - name: Setup
+      shell: bash
+      run: |
+        cat << EOF >> $GITHUB_ENV
+        PKG_POSTGRESQL_URL=postgresql://postgresql:postgresql@localhost:5432/goph_keeper_db
+        EOF

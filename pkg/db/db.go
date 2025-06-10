@@ -34,7 +34,6 @@ type Conn interface {
 	Exec(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error)
 	Query(ctx context.Context, sql string, optionsAndArgs ...interface{}) (pgx.Rows, error)
 	QueryRow(ctx context.Context, sql string, optionsAndArgs ...interface{}) pgx.Row
-	Begin(ctx context.Context) (pgx.Tx, error)
 }
 
 func New(params Params) (Conn, error) {
@@ -86,8 +85,4 @@ func (db *dbConn) Query(ctx context.Context, sql string, optionsAndArgs ...inter
 
 func (db *dbConn) QueryRow(ctx context.Context, sql string, optionsAndArgs ...interface{}) pgx.Row {
 	return db.dbPool.QueryRow(ctx, sql, optionsAndArgs...)
-}
-
-func (db *dbConn) Begin(ctx context.Context) (pgx.Tx, error) {
-	return db.dbPool.Begin(ctx)
 }
