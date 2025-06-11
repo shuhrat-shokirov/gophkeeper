@@ -153,3 +153,153 @@ func (m *MockDataServiceClient) GetCardByID(ctx context.Context, in *pb.IDReques
 	}
 	return nil, args.Error(1)
 }
+
+type MockGateway struct {
+	mock.Mock
+}
+
+func (m *MockGateway) Register(ctx context.Context, email, password string) (string, error) {
+	args := m.Called(ctx, email, password)
+	if otpId, ok := args.Get(0).(string); ok {
+		return otpId, args.Error(1)
+	}
+	return "", args.Error(1)
+}
+
+func (m *MockGateway) ConfirmOtp(ctx context.Context, otpId, otpCode string) (*Token, error) {
+	args := m.Called(ctx, otpId, otpCode)
+	if token, ok := args.Get(0).(*Token); ok {
+		return token, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) RefreshToken(ctx context.Context, refreshToken string) (*Token, error) {
+	args := m.Called(ctx, refreshToken)
+	if token, ok := args.Get(0).(*Token); ok {
+		return token, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) Login(ctx context.Context, email, password string) (string, error) {
+	args := m.Called(ctx, email, password)
+	if accessToken, ok := args.Get(0).(string); ok {
+		return accessToken, args.Error(1)
+	}
+	return "", args.Error(1)
+}
+
+func (m *MockGateway) Logout(ctx context.Context, refreshToken string) {
+	args := m.Called(ctx, refreshToken)
+	if err := args.Error(0); err != nil {
+		panic(err) // In a real implementation, you would handle this error properly
+	}
+	// No return value expected for logout
+}
+
+func (m *MockGateway) SaveLoginAndPass(ctx context.Context, userID int64, pass *LoginAndPass) error {
+	args := m.Called(ctx, userID, pass)
+	if err := args.Error(0); err != nil {
+		return err
+	}
+	// No return value expected for save operation
+	return nil
+}
+
+func (m *MockGateway) SaveText(ctx context.Context, userID int64, data *Text) error {
+	args := m.Called(ctx, userID, data)
+	if err := args.Error(0); err != nil {
+		return err
+	}
+	// No return value expected for save operation
+	return nil
+}
+
+func (m *MockGateway) SaveCard(ctx context.Context, userID int64, data *Card) error {
+	args := m.Called(ctx, userID, data)
+	if err := args.Error(0); err != nil {
+		return err
+	}
+	// No return value expected for save operation
+	return nil
+}
+
+func (m *MockGateway) SaveBinary(ctx context.Context, userID int64, data *Binary) error {
+	args := m.Called(ctx, userID, data)
+	if err := args.Error(0); err != nil {
+		return err
+	}
+	// No return value expected for save operation
+	return nil
+}
+
+func (m *MockGateway) GetLoginList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error) {
+	args := m.Called(ctx, userID, limit, offset)
+	if items, ok := args.Get(0).([]ListItem); ok {
+		return items, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetLoginByID(ctx context.Context, userID, id int64) (*LoginInfo, error) {
+	args := m.Called(ctx, userID, id)
+	if loginInfo, ok := args.Get(0).(*LoginInfo); ok {
+		return loginInfo, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetCardList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error) {
+	args := m.Called(ctx, userID, limit, offset)
+	if items, ok := args.Get(0).([]ListItem); ok {
+		return items, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetCardByID(ctx context.Context, userID, id int64) (*CardInfo, error) {
+	args := m.Called(ctx, userID, id)
+	if cardInfo, ok := args.Get(0).(*CardInfo); ok {
+		return cardInfo, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetTextList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error) {
+	args := m.Called(ctx, userID, limit, offset)
+	if items, ok := args.Get(0).([]ListItem); ok {
+		return items, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetTextByID(ctx context.Context, userID, id int64) (*TextInfo, error) {
+	args := m.Called(ctx, userID, id)
+	if textInfo, ok := args.Get(0).(*TextInfo); ok {
+		return textInfo, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetBinaryList(ctx context.Context, userID int64, limit, offset int64) ([]ListItem, error) {
+	args := m.Called(ctx, userID, limit, offset)
+	if items, ok := args.Get(0).([]ListItem); ok {
+		return items, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockGateway) GetBinaryByID(ctx context.Context, userID, id int64) (*BinaryInfo, error) {
+	args := m.Called(ctx, userID, id)
+	if binaryInfo, ok := args.Get(0).(*BinaryInfo); ok {
+		return binaryInfo, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
+var _ Gateway = (*MockGateway)(nil)
+
+func NewMockGateway() *MockGateway {
+	return &MockGateway{}
+}
