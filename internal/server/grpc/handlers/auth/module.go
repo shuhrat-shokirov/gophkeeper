@@ -7,7 +7,6 @@ import (
 	"google.golang.org/grpc"
 
 	"gophkeeper/internal/server/services/auth"
-	"gophkeeper/pkg/logger"
 	pb "gophkeeper/proto"
 )
 
@@ -16,14 +15,12 @@ var Module = fx.Provide(New)
 type Params struct {
 	fx.In
 
-	Logger      logger.Logger
 	AuthService auth.Service
 }
 
 type handler struct {
 	pb.UnimplementedAuthServiceServer
 
-	logger      logger.Logger
 	authService auth.Service
 }
 
@@ -35,13 +32,13 @@ type Handler interface {
 	RefreshToken(ctx context.Context, request *pb.RefreshTokenRequest) (*pb.RefreshTokenResponse, error)
 
 	Login(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error)
+	Logout(ctx context.Context, request *pb.LogoutRequest) (*pb.LogoutResponse, error)
 
 	RegisterService(srv *grpc.Server)
 }
 
 func New(p Params) Handler {
 	return &handler{
-		logger:      p.Logger,
 		authService: p.AuthService,
 	}
 }

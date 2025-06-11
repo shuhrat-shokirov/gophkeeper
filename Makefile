@@ -22,6 +22,9 @@ watch-lint:
 
 .DEFAULT_GOAL:=run
 
+fmt:
+	go fmt ./...
+
 migrate:
 	migrate create -ext sql -dir migrations/$(service) -seq -digits 2 $(name)
 

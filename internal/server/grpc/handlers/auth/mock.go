@@ -14,6 +14,14 @@ type MockHandler struct {
 	mock.Mock
 }
 
+func (m *MockHandler) Logout(ctx context.Context, request *pb.LogoutRequest) (*pb.LogoutResponse, error) {
+	args := m.Called(ctx, request)
+	if response, ok := args.Get(0).(*pb.LogoutResponse); ok {
+		return response, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
 func (m *MockHandler) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.RegisterResponse, error) {
 	args := m.Called(ctx, request)
 	if response, ok := args.Get(0).(*pb.RegisterResponse); ok {
