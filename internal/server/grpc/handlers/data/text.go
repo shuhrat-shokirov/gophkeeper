@@ -29,5 +29,4 @@ func (h *handler) SaveText(ctx context.Context, request *pb.TextData) (*pb.Respo
 		Status:  pb.ResponseStatus_SUCCESS.Enum(),
 		Message: proto.String("Text data saved successfully"),
 	}, nil
-
 }
