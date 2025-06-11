@@ -18,10 +18,18 @@ import (
 var (
 	secretKey string
 
-	Module = fx.Invoke(func(cfg config.Config) {
-		secretKey = cfg.GetString("aes.secret_key")
-	})
+	Module = fx.Invoke(New)
 )
+
+type Params struct {
+	fx.In
+
+	Config config.Config
+}
+
+func New(params Params) {
+	secretKey = params.Config.GetString("aes.secret_key")
+}
 
 func MustEncrypt(plainText string) string {
 	cipherText, err := encryptB64(plainText)

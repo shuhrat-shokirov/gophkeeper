@@ -1,5 +1,9 @@
 # 🛡 GophKeeper
 
+[![lint](https://github.com/shuhrat-shokirov/gophkeeper/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/aliftechuz/bdui/actions/workflows/lint.yml)
+[![test](https://github.com/aliftechuz/bdui/actions/workflows/unit-tests.yml/badge.svg?branch=develop)](https://github.com/shuhrat-shokirov/gophkeeper/actions/workflows/unit-tests.yml)
+[![cov](https://aliftechuz.github.io/bdui/badges/coverage.svg)](https://github.com/shuhrat-shokirov/gophkeeper/actions)
+
 **GophKeeper** — защищённое клиент-серверное приложение для хранения чувствительных данных: логинов и паролей, текстовых
 заметок, банковских карт и бинарных файлов. Сервер реализован на Go с использованием gRPC и PostgreSQL. Все данные перед
 сохранением шифруются.

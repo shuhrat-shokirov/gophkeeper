@@ -1,0 +1,16 @@
+name: redis
+description: 'Redis service for testing'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Redis Server
+      shell: bash
+      working-directory: fixtures/redis
+      run: docker compose -f docker-compose.yml up -d --wait
+    - name: Setup
+      shell: bash
+      run: |
+        cat << EOF >> $GITHUB_ENV
+        PKG_REDIS_URL=redis://localhost:6379
+        EOF

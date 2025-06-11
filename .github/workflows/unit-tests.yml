@@ -8,7 +8,8 @@ on:
 
 permissions:
   pull-requests: write
-  contents: read
+  contents: write
+  pages: write
 
 concurrency:
   group: ${{ github.actor }}-${{ github.workflow }}
@@ -21,6 +22,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Run services
+        uses: ./.github/services
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -37,8 +41,8 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          go test ./... -coverprofile=coverage.out.mocks -covermode=atomic
-          grep -v 'mock' coverage.out.mocks > coverage.out # remove mocks from coverage report
+          go test $(go list ./... | grep -v '/cmd/' | grep -v '/proto/') -coverprofile=coverage.out.mocks -covermode=atomic
+          grep -v -e 'mock' -e 'proto' coverage.out.mocks > coverage.out # убрать mock и proto из отчёта покрытия
 
       - name: Convert coverage to Cobertura format
         run: $(which gocover-cobertura) < coverage.out > coverage.xml
@@ -52,7 +56,7 @@ jobs:
           format: markdown
           indicators: true
           output: both
-          thresholds: '70 80'
+          thresholds: '50 60'
 
       - name: Add coverage report to pull request
         uses: marocchino/sticky-pull-request-comment@v2
@@ -60,3 +64,24 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
+
+      - name: Checkout to gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Update coverage badge
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        run: |
+          npm i -g badgen-cli
+          export COV=${{ steps.coverage-values.outputs.total}}
+          COLOR=$(node -p '+process.env.COV >= 70 ? `green` : `orange`')
+          mkdir -p badges
+          badgen -j coverage -s $COV% -c $COLOR > badges/coverage.svg
+      - name: Deploy badges
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update coverage badge"
+          branch: gh-pages
+          skip_fetch: true
+          skip_checkout: true

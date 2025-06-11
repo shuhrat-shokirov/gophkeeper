@@ -1,0 +1,12 @@
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5

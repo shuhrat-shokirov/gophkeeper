@@ -20,6 +20,14 @@ type Params struct {
 
 type Handler interface {
 	SaveLogin(context context.Context, request *pb.LoginData) (*pb.Response, error)
+	GetLoginList(ctx context.Context, request *pb.ListRequest) (*pb.ListResponse, error)
+	GetLoginByID(ctx context.Context, request *pb.IDRequest) (*pb.LoginDataResponse, error)
+
+	SaveText(ctx context.Context, request *pb.TextData) (*pb.Response, error)
+
+	SaveCard(ctx context.Context, data *pb.CardData) (*pb.Response, error)
+
+	SaveBinary(ctx context.Context, data *pb.BinaryData) (*pb.Response, error)
 
 	RegisterService(srv *grpc.Server)
 }
